@@ -1,9 +1,19 @@
 public class Cell extends Position{
+    private String defaultMarker;
     private String marker;
 
-    public Cell(int x, int y, String marker) {
+    public Cell(int x, int y, String defaultMarker) {
         super(x, y);
-        this.marker = marker;
+        this.defaultMarker = defaultMarker;
+        this.marker = defaultMarker;
+    }
+
+    public String getDefaultMarker() {
+        return defaultMarker;
+    }
+
+    public void setDefaultMarker(String defaultMarker) {
+        this.defaultMarker = defaultMarker;
     }
 
     public String getMarker() {
