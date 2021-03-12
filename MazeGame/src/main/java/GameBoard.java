@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class GameBoard {
     private int width, height;
     public Cell[][] gameBoard;
@@ -13,13 +11,30 @@ public class GameBoard {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (x % (width - 1) == 0 || y % (height - 1) == 0) {
-                    board[x][y] = new Cell(x, y, "#"); // set boundary wall
+                    board[x][y] = new Cell(x, y, "#", 1); // set boundary wall
                 } else {
-                    board[x][y] = new Cell(x, y, "."); // set empty cell
+                    board[x][y] = new Cell(x, y, ".", 0); // set empty cell
                 }
             }
         }
+        // set start and end cells
+        board[width - 1][height - 2].setDefaultMarker(("S"));
+        board[width - 1][height - 2].setIsSolid(0);
+        board[0][1].setDefaultMarker("E");
+        board[0][1].setIsSolid(0);
         this.gameBoard = board;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getCellIsSolid(int x, int y) {
+        return(this.gameBoard[x][y].getIsSolid());
     }
 
     public void updateBoard(Player player) {
