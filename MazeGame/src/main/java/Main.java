@@ -1,18 +1,22 @@
 public class Main {
     public static void main(String []args) {
 
-        GameBoard board = new GameBoard(20, 10);
-        // board.printBoard();
+        // create 15 by 7 cell game board
+        GameBoard board = new GameBoard(15, 7);
 
-        Player player1 = new Player(1, 1);
+
+        // create player and update game board
+        Player player1 = new Player(board.getWidth() - 1, board.getHeight() - 2);
         board.updateBoard(player1);
         board.printBoard();
 
-        for (int i = 0; i < 10; i++) {
-            player1.move();
+        // test player movement for 20 turns
+        for (int i = 0; i < 20; i++) {
+            player1.move(board);
             board.updateBoard(player1);
             board.printBoard();
         }
+
         //board.printBoard();
         /*
         Cell[][] map = new Cell[20][10];
