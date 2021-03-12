@@ -1,11 +1,13 @@
-public class Cell extends Position{
+public class Cell extends Position {
     private String defaultMarker;
     private String marker;
+    private int isSolid;
 
-    public Cell(int x, int y, String defaultMarker) {
+    public Cell(int x, int y, String defaultMarker, int isSolid) {
         super(x, y);
         this.defaultMarker = defaultMarker;
         this.marker = defaultMarker;
+        this.isSolid = isSolid;
     }
 
     public String getDefaultMarker() {
@@ -22,6 +24,14 @@ public class Cell extends Position{
 
     public void setMarker(String marker) {
         this.marker = marker;
+    }
+
+    public int getIsSolid() {
+        return isSolid;
+    }
+
+    public void setIsSolid(int isSolid) {
+        this.isSolid = isSolid;
     }
 
     @Override
