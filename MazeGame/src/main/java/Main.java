@@ -17,15 +17,18 @@ public class Main {
 
         // create player
         Player player1 = new Player(1, 1, "P");
+        Enemy enemy1 = new Enemy(18, 8, "!");
 
         // update board with new player
         JPanel[][] cells = board.getCells();
         cells[player1.getX()][player1.getY()].add(player1.getLabel());
+        cells[enemy1.getX()][enemy1.getY()].add(enemy1.getLabel());
         SwingUtilities.updateComponentTreeUI(MazeFrame);
 
 
-        for (int turn = 0; turn < 10; turn++) {
+        for (int turn = 0; turn < 100; turn++) {
             player1.move(board, boardState);
+            enemy1.move(board, boardState, player1);
             SwingUtilities.updateComponentTreeUI(MazeFrame);
         }
 
