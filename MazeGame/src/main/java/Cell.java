@@ -10,6 +10,7 @@ public class Cell extends Position {
         this.isSolid = isSolid;
     }
 
+
     public String getDefaultMarker() {
         return defaultMarker;
     }
