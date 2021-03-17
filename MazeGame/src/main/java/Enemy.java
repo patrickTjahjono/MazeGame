@@ -18,11 +18,12 @@ public class Enemy extends MovingCharacter{
 
         int bestMoveDistance = Integer.MAX_VALUE;
         int bestMoveIndex = -1;
-        // Squared Distance from west and east cell to player
+
+        // Squared Distances from west and east cell to player
         squaredDistances[0] = boardState.calculateSquaredDistance(enemyX - 1, enemyY, playerX, playerY);
         squaredDistances[1] = boardState.calculateSquaredDistance(enemyX + 1, enemyY, playerX, playerY);
 
-        // Squared Distance from north cell and east cell to player
+        // Squared Distances from north cell and east cell to player
         squaredDistances[2] = boardState.calculateSquaredDistance(enemyX, enemyY - 1, playerX, playerY);
         squaredDistances[3] = boardState.calculateSquaredDistance(enemyX, enemyY + 1, playerX, playerY);
 
@@ -32,13 +33,15 @@ public class Enemy extends MovingCharacter{
                 bestMoveIndex = i;
             }
         }
+        /*
         System.out.printf(
-                "west cell to player:" + squaredDistances[0] + "\n" +
-                "east cell to player" + squaredDistances[1] + "\n" +
-                "north cell to player" + squaredDistances[2] + "\n" +
-                "south cell to player" + squaredDistances[3] + "\n" +
-                "best move:" + moves[bestMoveIndex] + "\n"
+                "west cell to player: " + squaredDistances[0] + "\n" +
+                "east cell to player: " + squaredDistances[1] + "\n" +
+                "north cell to player: " + squaredDistances[2] + "\n" +
+                "south cell to player: " + squaredDistances[3] + "\n" +
+                "best move: " + moves[bestMoveIndex] + "\n"
         );
+         */
        return moves[bestMoveIndex];
     }
 
