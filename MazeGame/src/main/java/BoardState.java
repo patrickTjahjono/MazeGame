@@ -14,16 +14,14 @@ public class BoardState {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (x % (width - 1) == 0 || y % (height - 1) == 0) {
-                    boardState[x][y] = new Cell(x, y, "#", 1); // set boundary wall
+                    boardState[x][y] = new Cell(x, y,1); // set boundary wall
                 } else {
-                    boardState[x][y] = new Cell(x, y, ".", 0); // set empty cell
+                    boardState[x][y] = new Cell(x, y,0); // set empty cell
                 }
             }
         }
         // set start and end cells
-        boardState[width - 1][height - 2].setDefaultMarker(("S"));
         boardState[width - 1][height - 2].setIsSolid(0);
-        boardState[0][1].setDefaultMarker("E");
         boardState[0][1].setIsSolid(0);
         this.boardState = boardState;
 
@@ -61,24 +59,5 @@ public class BoardState {
             squaredDistance = differenceX * differenceX + differenceY * differenceY;
         }
         return squaredDistance;
-    }
-
-    public void updateBoard(Player player) {
-        for (int y = 0; y < this.height; y++) {
-            for (int x = 0; x < this.width; x++) {
-                this.boardState[x][y].setMarker(this.boardState[x][y].getDefaultMarker());
-            }
-        }
-        this.boardState[player.getX()][player.getY()].setMarker("P");
-    }
-
-    public void printBoard() {
-        System.out.println();
-        for (int y = 0; y < this.height; y++) {
-            for (int x = 0; x < this.width; x++) {
-                System.out.printf(this.boardState[x][y].toString());
-            }
-            System.out.println();
-        }
     }
 }
