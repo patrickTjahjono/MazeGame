@@ -1,5 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+import java.util.Random;
 
 public class BoardState {
     private int width, height;
@@ -17,6 +18,15 @@ public class BoardState {
                     boardState[x][y] = new Cell(x, y,1); // set boundary wall
                 } else {
                     boardState[x][y] = new Cell(x, y,0); // set empty cell
+                }
+            }
+        }
+
+        Random random = new Random();
+        for (int y = 2; y < height - 2; y++) {
+            for (int x = 2; x < width - 2; x++) {
+                if (y % 2 == 0 && random.nextFloat() < 0.50) {
+                    boardState[x][y].setIsSolid(1);
                 }
             }
         }
