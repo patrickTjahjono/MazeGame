@@ -13,7 +13,6 @@ public class Enemy extends MovingCharacter{
         this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));
     }
 
-
     private String getBestMove(Player player, BoardState boardState) {
         String[] moves = {"w", "e", "n", "s"};
         int[] squaredDistances = new int[4];
@@ -26,7 +25,7 @@ public class Enemy extends MovingCharacter{
         int bestMoveDistance = Integer.MAX_VALUE;
         int bestMoveIndex = -1;
 
-        // squared Distances from each cell to player
+        // squared distances from each cell (adjacent of the enemy) to the player
         squaredDistances[0] = boardState.calculateSquaredDistance(enemyX - 1, enemyY, playerX, playerY);
         squaredDistances[1] = boardState.calculateSquaredDistance(enemyX + 1, enemyY, playerX, playerY);
         squaredDistances[2] = boardState.calculateSquaredDistance(enemyX, enemyY - 1, playerX, playerY);
@@ -40,6 +39,17 @@ public class Enemy extends MovingCharacter{
         }
 
        return moves[bestMoveIndex];
+    }
+
+    public int getCurrentSquaredDistanceToPlayer(Player player, BoardState boardState) {
+        int playerX = player.getX();
+        int playerY = player.getY();
+        int enemyX = this.getX();
+        int enemyY = this.getY();
+
+        int currentSquaredDistanceToPlayer = boardState.calculateSquaredDistance(enemyX, enemyY, playerX, playerY);
+
+        return currentSquaredDistanceToPlayer;
     }
 
     public void move(Board board, BoardState boardState, Player player) {
