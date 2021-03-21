@@ -1,9 +1,16 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Enemy extends MovingCharacter{
-    public Enemy(int x, int y, String label)
+    public Enemy(int x, int y) throws IOException
     {
-        super(x, y, label);
+        super(x, y);
+        Image image = ImageIO.read(new File("src/ghost.png"));
+        this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));
     }
 
 
@@ -19,13 +26,30 @@ public class Enemy extends MovingCharacter{
         int bestMoveDistance = Integer.MAX_VALUE;
         int bestMoveIndex = -1;
 
-        // Squared Distances from west and east cell to player
-        squaredDistances[0] = boardState.calculateSquaredDistance(enemyX - 1, enemyY, playerX, playerY);
-        squaredDistances[1] = boardState.calculateSquaredDistance(enemyX + 1, enemyY, playerX, playerY);
+        // Squared Distances from each cell to player
+        if (enemyX - 1 >= 0) {
+            squaredDistances[0] = boardState.calculateSquaredDistance(enemyX - 1, enemyY, playerX, playerY);
+        } else {
+            squaredDistances[0] = Integer.MAX_VALUE;
+        }
 
-        // Squared Distances from north cell and east cell to player
-        squaredDistances[2] = boardState.calculateSquaredDistance(enemyX, enemyY - 1, playerX, playerY);
-        squaredDistances[3] = boardState.calculateSquaredDistance(enemyX, enemyY + 1, playerX, playerY);
+        if (enemyX + 1 < boardState.getWidth()) {
+            squaredDistances[1] = boardState.calculateSquaredDistance(enemyX + 1, enemyY, playerX, playerY);
+        } else {
+            squaredDistances[1] = Integer.MAX_VALUE;
+        }
+
+        if (enemyY - 1 >= 0) {
+            squaredDistances[2] = boardState.calculateSquaredDistance(enemyX, enemyY - 1, playerX, playerY);
+        } else {
+            squaredDistances[2] = Integer.MAX_VALUE;
+        }
+
+        if (enemyY + 1 < boardState.getHeight()) {
+            squaredDistances[3] = boardState.calculateSquaredDistance(enemyX, enemyY + 1, playerX, playerY);
+        } else {
+            squaredDistances[3] = Integer.MAX_VALUE;
+        }
 
         for (int i = 0; i < 4; i++) {
             if (bestMoveDistance > squaredDistances[i]) {
