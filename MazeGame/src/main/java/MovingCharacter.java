@@ -1,13 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 abstract class MovingCharacter extends Position{
-    private JLabel label;
+    protected JLabel label;
 
-    protected MovingCharacter(int x, int y, String label) {
+    protected MovingCharacter(int x, int y) throws IOException {
         super(x, y);
-        this.label = new JLabel(label);
-        this.label.setFont(new Font("Arial",1,20));
     }
 
     public JLabel getLabel() {

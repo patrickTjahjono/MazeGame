@@ -1,24 +1,52 @@
-import java.util.Scanner;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.awt.Image;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.*;
 
-public class Player extends MovingCharacter{
-    public Player(int x, int y, String label)
+public class Player extends MovingCharacter implements KeyListener {
+    private String nextMove = "None";
+    public Player(int x, int y) throws IOException
     {
-        super(x, y, label);
+        super(x, y);
+        Image image = ImageIO.read(new File("src/playertest.png"));
+        this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));
     }
 
-    public void move(Board board, BoardState boardState) {
-        Scanner playerInput = new Scanner(System.in);
-        System.out.println("Make your move.");
-        String playerMove = playerInput.nextLine();
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
 
-        if (playerMove.equals("w")) {
-            this.moveWest(board, boardState);
-        } else if (playerMove.equals("e")) {
-            this.moveEast(board, boardState);
-        } else if (playerMove.equals("n")) {
-            this.moveNorth(board, boardState);
-        } else if (playerMove.equals("s")) {
-            this.moveSouth(board, boardState);
+        if(key == KeyEvent.VK_UP) { // move up
+            this.nextMove = "n";
+        } else if (key == KeyEvent.VK_DOWN) { // move down
+            this.nextMove = "s";
+        } else if (key == KeyEvent.VK_LEFT) { // move left
+            this.nextMove = "w";
+        } else if (key == KeyEvent.VK_RIGHT) { //move right
+            this.nextMove = "e";
         }
     }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    public void move(Board board, BoardState boardState) {
+        if (this.nextMove.equals("w")) {
+            this.moveWest(board, boardState);
+        } else if (this.nextMove.equals("e")) {
+            this.moveEast(board, boardState);
+        } else if (this.nextMove.equals("n")) {
+            this.moveNorth(board, boardState);
+        } else if (this.nextMove.equals("s")) {
+            this.moveSouth(board, boardState);
+        }
+        this.nextMove = "None";
+    }
+
 }
