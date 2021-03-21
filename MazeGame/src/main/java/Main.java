@@ -35,6 +35,7 @@ public class Main {
                     Thread.sleep(500);
                     player1.move(board, boardState);
 
+                    // check if any enemies have caught up with the player
                     if (enemy1.getCurrentSquaredDistanceToPlayer(player1, boardState) != 1) {
                         enemy1.move(board, boardState, player1);
                         SwingUtilities.updateComponentTreeUI(MazeFrame);
@@ -51,8 +52,5 @@ public class Main {
             e.printStackTrace();
         }
 
-
-        // https://stackoverflow.com/questions/7628121/how-can-i-refresh-or-reload-the-jframe/7630604
-        SwingUtilities.updateComponentTreeUI(MazeFrame);
     }
 }
