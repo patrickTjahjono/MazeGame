@@ -59,7 +59,7 @@ public class BoardState {
         int cell2IsSolid = getCellIsSolid(x2, y2);
 
         // Set squaredDistance to 2147483647 if a cell is solid or out of bounds
-        if ((cell1IsSolid == 1) || (cell1IsSolid == -1) || (cell2IsSolid == 1) || (cell2IsSolid == -1)) {
+        if ((cell1IsSolid != 0) || (cell2IsSolid != 0)) {
             squaredDistance = Integer.MAX_VALUE;
         } else {
             int differenceX = (x2 - x1);
