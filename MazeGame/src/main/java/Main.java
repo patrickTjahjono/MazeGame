@@ -17,7 +17,7 @@ public class Main {
         BoardState boardState = new BoardState(board,20, 10);
 
         try {
-            Player player1 = new Player(1, 1);
+            Player player1 = new Player(0, 1);
             Enemy enemy1 = new Enemy(18, 8);
             MazeFrame.addKeyListener(player1);
 
