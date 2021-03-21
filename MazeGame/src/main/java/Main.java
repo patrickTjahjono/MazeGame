@@ -29,12 +29,18 @@ public class Main {
             SwingUtilities.updateComponentTreeUI(MazeFrame);
 
             //int turn = 0;
-            while(true) {
+            int continue_game = 1;
+            while(continue_game == 1) {
                 try {
                     Thread.sleep(500);
                     player1.move(board, boardState);
-                    enemy1.move(board, boardState, player1);
-                    SwingUtilities.updateComponentTreeUI(MazeFrame);
+
+                    if (enemy1.getCurrentSquaredDistanceToPlayer(player1, boardState) != 1) {
+                        enemy1.move(board, boardState, player1);
+                        SwingUtilities.updateComponentTreeUI(MazeFrame);
+                    } else { // enemy has caught up to player
+                        continue_game = 0;
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
