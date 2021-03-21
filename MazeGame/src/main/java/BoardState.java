@@ -44,14 +44,22 @@ public class BoardState {
     }
 
     public int getCellIsSolid(int x, int y) {
-        return(this.boardState[x][y].getIsSolid());
+        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+            return (this.boardState[x][y].getIsSolid());
+        } else {
+            return -1;
+        }
     }
 
     public int calculateSquaredDistance(int x1, int y1, int x2, int y2) {
         int squaredDistance;
+        // check bounds
+
         int cell1IsSolid = getCellIsSolid(x1, y1);
         int cell2IsSolid = getCellIsSolid(x2, y2);
-        if ((cell1IsSolid == 1) || (cell2IsSolid == 1)) {
+
+        // Set squaredDistance to 2147483647 if a cell is solid or out of bounds
+        if ((cell1IsSolid == 1) || (cell1IsSolid == -1) || (cell2IsSolid == 1) || (cell2IsSolid == -1)) {
             squaredDistance = Integer.MAX_VALUE;
         } else {
             int differenceX = (x2 - x1);

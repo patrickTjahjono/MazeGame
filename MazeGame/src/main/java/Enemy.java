@@ -26,30 +26,11 @@ public class Enemy extends MovingCharacter{
         int bestMoveDistance = Integer.MAX_VALUE;
         int bestMoveIndex = -1;
 
-        // Squared Distances from each cell to player
-        if (enemyX - 1 >= 0) {
-            squaredDistances[0] = boardState.calculateSquaredDistance(enemyX - 1, enemyY, playerX, playerY);
-        } else {
-            squaredDistances[0] = Integer.MAX_VALUE;
-        }
-
-        if (enemyX + 1 < boardState.getWidth()) {
-            squaredDistances[1] = boardState.calculateSquaredDistance(enemyX + 1, enemyY, playerX, playerY);
-        } else {
-            squaredDistances[1] = Integer.MAX_VALUE;
-        }
-
-        if (enemyY - 1 >= 0) {
-            squaredDistances[2] = boardState.calculateSquaredDistance(enemyX, enemyY - 1, playerX, playerY);
-        } else {
-            squaredDistances[2] = Integer.MAX_VALUE;
-        }
-
-        if (enemyY + 1 < boardState.getHeight()) {
-            squaredDistances[3] = boardState.calculateSquaredDistance(enemyX, enemyY + 1, playerX, playerY);
-        } else {
-            squaredDistances[3] = Integer.MAX_VALUE;
-        }
+        // squared Distances from each cell to player
+        squaredDistances[0] = boardState.calculateSquaredDistance(enemyX - 1, enemyY, playerX, playerY);
+        squaredDistances[1] = boardState.calculateSquaredDistance(enemyX + 1, enemyY, playerX, playerY);
+        squaredDistances[2] = boardState.calculateSquaredDistance(enemyX, enemyY - 1, playerX, playerY);
+        squaredDistances[3] = boardState.calculateSquaredDistance(enemyX, enemyY + 1, playerX, playerY);
 
         for (int i = 0; i < 4; i++) {
             if (bestMoveDistance > squaredDistances[i]) {
@@ -57,15 +38,7 @@ public class Enemy extends MovingCharacter{
                 bestMoveIndex = i;
             }
         }
-        /*
-        System.out.printf(
-                "west cell to player: " + squaredDistances[0] + "\n" +
-                "east cell to player: " + squaredDistances[1] + "\n" +
-                "north cell to player: " + squaredDistances[2] + "\n" +
-                "south cell to player: " + squaredDistances[3] + "\n" +
-                "best move: " + moves[bestMoveIndex] + "\n"
-        );
-         */
+
        return moves[bestMoveIndex];
     }
 
