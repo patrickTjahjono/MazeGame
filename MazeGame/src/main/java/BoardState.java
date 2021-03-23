@@ -49,7 +49,7 @@ public class BoardState {
         int maxNumPunishments = 5;
         int numPunishments= 0;
         while (numPunishments < 1) {
-            for (int y = 1; y < height - 1; y++) {
+            for (int y = 2; y < height - 1; y++) {
                 for (int x = 1; x < width - 1; x++) {
                     if (numPunishments < maxNumPunishments &&
                             boardStateCells[x][y].getContainsRewardOrPunishment() == 0 &&
