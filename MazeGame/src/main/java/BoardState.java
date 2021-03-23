@@ -48,9 +48,10 @@ public class BoardState {
         }
 
         // generate punishments
-        int maxNumPunishments = 3;
-        int numPunishments= 0;
-        while (numPunishments < maxNumPunishments) {
+        int maxNumPunishments = 5;
+        int minNumPunishments = 2;
+        int numPunishments = 0;
+        while (numPunishments < minNumPunishments) {
             for (int y = 2; y < height - 1; y++) {
                 for (int x = 1; x < width - 1; x++) {
                     if (numPunishments < maxNumPunishments &&
@@ -72,8 +73,9 @@ public class BoardState {
 
         // generate rewards
         int maxNumRewards = 5;
+        int minNumRewards = 2;
         int numRewards = 0;
-        while (numRewards < maxNumRewards) {
+        while (numRewards < minNumRewards) {
             for (int y = 1; y < height - 1; y++) {
                 for (int x = 1; x < width - 1; x++) {
                     if (numRewards < maxNumRewards &&
