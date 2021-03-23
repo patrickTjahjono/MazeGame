@@ -15,6 +15,8 @@ public class Main {
 
         // create board states
         BoardState boardState = BoardState.getInstance();
+        ScoreBoard scoreboard = ScoreBoard.getInstance();
+        TurnCounter turnCounter = TurnCounter.getInstance();
 
         try {
             Player player1 = Player.getInstance();
@@ -29,6 +31,7 @@ public class Main {
             while(continue_game == 1) {
                 try {
                     Thread.sleep(500);
+                    turnCounter.updateTurn();
                     player1.move();
 
                     // check if any enemies have caught up with the player
