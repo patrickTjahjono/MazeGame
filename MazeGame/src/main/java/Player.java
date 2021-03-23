@@ -79,8 +79,10 @@ public class Player extends MovingCharacter implements KeyListener {
 
         // When player reaches end cell sets continue_game to zero
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainEndCell() == 1) {
-            Board.getInstance().continue_game = 0;
-            this.isAtEnd = true;
+            if (this.allRewardsCollected() == 1) {
+                Board.getInstance().continue_game = 0;
+                this.isAtEnd = true;
+            }
         }
     }
 
@@ -107,6 +109,24 @@ public class Player extends MovingCharacter implements KeyListener {
                 punishment.collectedPunishment();
                 boardState.boardStateCells[punishmentX][punishmentY].setContainsPunishment(0);
             }
+        }
+    }
+
+    public int allRewardsCollected() {
+        BoardState boardState = BoardState.getInstance();
+        ArrayList<Rewards> rewards = boardState.getReward_R();
+        int numCollectedRewards = 0;
+        for (Rewards reward : rewards) {
+            int rewardX = reward.getX();
+            int rewardY = reward.getY();
+            if (boardState.boardStateCells[rewardX][rewardY].getContainsReward() == 0) {
+                numCollectedRewards++;
+            }
+        }
+        if (numCollectedRewards == rewards.size()) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }
