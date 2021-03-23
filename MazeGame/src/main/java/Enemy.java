@@ -73,6 +73,8 @@ public class Enemy extends MovingCharacter{
 
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
             leave_reward_R();
+        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
+            leave_punishment();
         }
 
         if (bestMove.equals("w")) {
@@ -87,6 +89,8 @@ public class Enemy extends MovingCharacter{
 
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
             touch_reward_R();
+        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
+            touch_punishment();
         }
     }
 
@@ -112,6 +116,32 @@ public class Enemy extends MovingCharacter{
             int rewardY = reward.getY();
             if (rewardX == this.getX() && rewardY == this.getY()) {
                 board.getCells()[rewardX][rewardY].add(reward.getLabel());
+            }
+        }
+    }
+
+    public void touch_punishment(){
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        ArrayList<Punishment> punishments = boardState.getPunishments();
+        for (Punishment punishment : punishments) {
+            int punishmentX = punishment.getX();
+            int punishmentY = punishment.getY();
+            if (punishmentX == this.getX() && punishmentY == this.getY()) {
+                board.getCells()[punishmentX][punishmentY].remove(punishment.getLabel());
+            }
+        }
+    }
+
+    public void leave_punishment(){
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        ArrayList<Punishment> punishments = boardState.getPunishments();
+        for (Punishment punishment : punishments) {
+            int punishmentX = punishment.getX();
+            int punishmentY = punishment.getY();
+            if (punishmentX == this.getX() && punishmentY == this.getY()) {
+                board.getCells()[punishmentX][punishmentY].add(punishment.getLabel());
             }
         }
     }

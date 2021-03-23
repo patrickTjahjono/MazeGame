@@ -71,6 +71,10 @@ public class Player extends MovingCharacter implements KeyListener {
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
             touch_reward_R();
         }
+
+        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
+            touch_punishment();
+        }
     }
 
     public void touch_reward_R(){
@@ -82,6 +86,19 @@ public class Player extends MovingCharacter implements KeyListener {
             if (rewardX == this.getX() && rewardY == this.getY()) {
                 reward.collectedRR();
                 boardState.boardStateCells[rewardX][rewardY].setContainsReward(0);
+            }
+        }
+    }
+
+    public void touch_punishment(){
+        BoardState boardState = BoardState.getInstance();
+        ArrayList<Punishment> punishments = boardState.getPunishments();
+        for (Punishment punishment : punishments) {
+            int punishmentX = punishment.getX();
+            int punishmentY = punishment.getY();
+            if (punishmentX == this.getX() && punishmentY == this.getY()) {
+                punishment.collectedPunishment();
+                boardState.boardStateCells[punishmentX][punishmentY].setContainsPunishment(0);
             }
         }
     }
