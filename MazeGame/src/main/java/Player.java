@@ -71,7 +71,6 @@ public class Player extends MovingCharacter implements KeyListener {
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
             touch_reward_R();
         }
-
     }
 
     public void touch_reward_R(){
@@ -86,6 +85,4 @@ public class Player extends MovingCharacter implements KeyListener {
             }
         }
     }
-
-
 }
