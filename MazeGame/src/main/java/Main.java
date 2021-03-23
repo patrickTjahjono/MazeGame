@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -19,6 +21,18 @@ public class Main {
         TimeCounter timeCounter = TimeCounter.getInstance();
 
         try {
+            // windows close button with confirmation created
+            MazeFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    if (JOptionPane.showConfirmDialog(MazeFrame,
+                            "Are you sure you want to close this window?", "Close Window?",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                        System.exit(0);
+                    }
+                }
+            });
             Player player1 = Player.getInstance();
             Enemy enemy1 = new Enemy(18, 9);
             Enemy enemy2 = new Enemy(13, 7);
@@ -30,12 +44,16 @@ public class Main {
             //int turn = 0;
             // checks continue_game value from  board
             while(board.getContinue_game() == 1) {
+                //pause condition
+                player1.move();
+                if(board.getPause_game())
+                    continue;
+
                 try {
                     Thread.sleep(500);
                     timeCounter.updateTime();
                     boardState.spawnBR();
                     boardState.checkBonusRewardExpiration();
-                    player1.move();
                     enemy1.move();
                     enemy2.move();
                     SwingUtilities.updateComponentTreeUI(MazeFrame);
@@ -53,13 +71,19 @@ public class Main {
                     MazeFrame.setVisible(false);
                     EndScreen win = new EndScreen();
                     MazeFrame.setContentPane(win);
-                    MazeFrame.setVisible(true);
                 } else {
                     System.out.println("caught by enemy");
                     LostScreen lose = new LostScreen();
                     MazeFrame.setContentPane(lose);
-                    MazeFrame.setVisible(true);
                 }
+                /*//create jButton to restart game
+                //JPanel rPanel = new JPanel();
+                JButton restart = new JButton("Restart");
+                //rPanel.add(restart);
+                restart.setBounds(150, 250,130,30);
+                MazeFrame.add(restart,BorderLayout.SOUTH);
+                MazeFrame.setLayout(null);
+                MazeFrame.setVisible(true);*/
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block

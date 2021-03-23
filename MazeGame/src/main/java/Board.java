@@ -6,6 +6,7 @@ public class Board extends JPanel {
     private static Board instance = null;
     private JPanel[][] cells;
     private int continue_game;   // check status of player
+    private boolean pause_game;
 
     public static Board getInstance() {
         if (instance == null)
@@ -14,6 +15,7 @@ public class Board extends JPanel {
     }
 
     private Board() {
+        pause_game = false;
         continue_game = 1;
         JPanel[][] cells = new JPanel[20][10]; // 20 cell wide, 10 cell tall board
         setLayout(new GridLayout(10, 20));
@@ -41,5 +43,13 @@ public class Board extends JPanel {
 
     public void setContinue_game(int i) {
         this.continue_game = i;
+    }
+
+    public boolean getPause_game(){
+        return pause_game;
+    }
+
+    public void setPause_game(boolean bool) {
+        this.pause_game = bool;
     }
 }

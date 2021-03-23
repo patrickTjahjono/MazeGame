@@ -39,6 +39,17 @@ public class Player extends MovingCharacter implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
+        if (key == KeyEvent.VK_ESCAPE) // pause using esc
+        {
+            if(!Board.getInstance().getPause_game())
+                Board.getInstance().setPause_game(true);
+            else{
+                Board.getInstance().setPause_game(false);
+            }
+        }
+        else if(Board.getInstance().getPause_game()) // will skip movement when its paused
+            return;
+
         if(key == KeyEvent.VK_UP) { // move up
             this.nextMove = "n";
         } else if (key == KeyEvent.VK_DOWN) { // move down
