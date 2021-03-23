@@ -1,11 +1,14 @@
 import java.awt.*;
 import javax.swing.*;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BoardState {
     private static BoardState instance = null;
+    private ArrayList<Rewards> rewards_R = new ArrayList<>();
     private int width, height;
-    public Cell[][] boardState;
+    public Cell[][] boardStateCells;
 
     public static BoardState getInstance() {
         if (instance == null)
@@ -18,35 +21,61 @@ public class BoardState {
         this.width = 20;
         this.height = 10;
 
-        Cell[][] boardState = new Cell[width][height];
+        Cell[][] boardStateCells = new Cell[width][height];
 
+        // initialize empty cells and boundary walls
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (x % (width - 1) == 0 || y % (height - 1) == 0) {
-                    boardState[x][y] = new Cell(x, y,1); // set boundary wall
+                    boardStateCells[x][y] = new Cell(x, y,1); // set boundary wall
                 } else {
-                    boardState[x][y] = new Cell(x, y,0); // set empty cell
+                    boardStateCells[x][y] = new Cell(x, y,0); // set empty cell
                 }
             }
         }
 
+        // generate semi-random barriers
         Random random = new Random();
         for (int y = 2; y < height - 2; y++) {
             for (int x = 2; x < width - 2; x++) {
                 if (y % 2 == 0 && random.nextFloat() < 0.50) {
-                    boardState[x][y].setIsSolid(1);
+                    boardStateCells[x][y].setIsSolid(1);
                 }
             }
         }
-        // set start and end cells
-        boardState[width - 1][height - 2].setIsSolid(0);
-        boardState[0][1].setIsSolid(0);
-        this.boardState = boardState;
 
+        int maxNumRewards = 10;
+        int numRewards = 0;
+        while (numRewards < 1) {
+            for (int y = 1; y < height - 1; y++) {
+                for (int x = 1; x < width - 1; x++) {
+                    if (numRewards < maxNumRewards &&
+                            boardStateCells[x][y].getContainsRewardOrPunishment() == 0 &&
+                            boardStateCells[x][y].getIsSolid() == 0 &&
+                            random.nextFloat() < 0.05) {
+                        try {
+                            Rewards r = new Rewards(x, y);
+                            rewards_R.add(r);
+                            boardStateCells[x][y].setContainsReward(1);
+                            numRewards++;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        // set start and end cells
+        boardStateCells[width - 1][height - 2].setIsSolid(0);
+        boardStateCells[0][1].setIsSolid(0);
+        this.boardStateCells = boardStateCells;
+
+        // shade in solid cells
         JPanel[][] cells = board.getCells();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (boardState[x][y].getIsSolid() == 1) {
+                if (boardStateCells[x][y].getIsSolid() == 1) {
                     cells[x][y].setBackground(Color.BLACK);
                 }
             }
@@ -63,7 +92,7 @@ public class BoardState {
 
     public int getCellIsSolid(int x, int y) {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            return (this.boardState[x][y].getIsSolid());
+            return (this.boardStateCells[x][y].getIsSolid());
         } else {
             return -1;
         }
@@ -86,4 +115,6 @@ public class BoardState {
         }
         return squaredDistance;
     }
+
+    public ArrayList<Rewards> getReward_R() {return rewards_R;}
 }
