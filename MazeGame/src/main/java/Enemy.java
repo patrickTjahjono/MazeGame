@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Enemy extends MovingCharacter{
@@ -70,6 +71,10 @@ public class Enemy extends MovingCharacter{
         Player player = Player.getInstance();
         String bestMove = getBestMove();
 
+        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
+            leave_reward_R();
+        }
+
         if (bestMove.equals("w")) {
             this.moveWest();
         } else if (bestMove.equals("e")) {
@@ -78,6 +83,36 @@ public class Enemy extends MovingCharacter{
             this.moveNorth();
         } else if (bestMove.equals("s")) {
             this.moveSouth();
+        }
+
+        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
+            touch_reward_R();
+        }
+    }
+
+    public void touch_reward_R(){
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        ArrayList<Rewards> rewards = boardState.getReward_R();
+        for (Rewards reward : rewards) {
+            int rewardX = reward.getX();
+            int rewardY = reward.getY();
+            if (rewardX == this.getX() && rewardY == this.getY()) {
+                board.getCells()[rewardX][rewardY].remove(reward.getLabel());
+            }
+        }
+    }
+
+    public void leave_reward_R(){
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        ArrayList<Rewards> rewards = boardState.getReward_R();
+        for (Rewards reward : rewards) {
+            int rewardX = reward.getX();
+            int rewardY = reward.getY();
+            if (rewardX == this.getX() && rewardY == this.getY()) {
+                board.getCells()[rewardX][rewardY].add(reward.getLabel());
+            }
         }
     }
 }
