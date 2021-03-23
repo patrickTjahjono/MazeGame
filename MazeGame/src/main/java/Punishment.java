@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Punishment extends Position{
-    JLabel label;
+    private JLabel label;
 
     public Punishment(int x, int y) throws IOException {
         super(x, y);

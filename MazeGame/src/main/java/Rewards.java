@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Rewards extends Position{
-    JLabel label;
+    private JLabel label;
 
     public Rewards(int x, int y) throws IOException {
         super(x, y);
