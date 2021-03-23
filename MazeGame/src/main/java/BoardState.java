@@ -130,6 +130,14 @@ public class BoardState {
         }
     }
 
+    public int getCellContainsEnemy(int x, int y) {
+        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+            return (this.boardStateCells[x][y].getContainsEnemy());
+        } else {
+            return -1;
+        }
+    }
+
     public void setBonusReward(BonusReward bonusReward) {
         this.bonusReward = bonusReward;
     }
@@ -189,6 +197,25 @@ public class BoardState {
 
         // Set squaredDistance to 2147483647 if a cell is solid or out of bounds
         if ((cell1IsSolid != 0) || (cell2IsSolid != 0)) {
+            squaredDistance = Integer.MAX_VALUE;
+        } else {
+            int differenceX = (x2 - x1);
+            int differenceY = (y2 - y1);
+            squaredDistance = differenceX * differenceX + differenceY * differenceY;
+        }
+        return squaredDistance;
+    }
+
+    public int calculateSquaredDistanceWithEnemyCheck(int x1, int y1, int x2, int y2) {
+        int squaredDistance;
+        // check bounds
+
+        int cell1IsSolid = getCellIsSolid(x1, y1);
+        int cell2IsSolid = getCellIsSolid(x2, y2);
+        int cell1ContainsEnemy = getCellContainsEnemy(x1, y1);
+
+        // Set squaredDistance to 2147483647 if a cell is solid or out of bounds
+        if ((cell1IsSolid != 0) || (cell1ContainsEnemy == 1) || (cell2IsSolid != 0)) {
             squaredDistance = Integer.MAX_VALUE;
         } else {
             int differenceX = (x2 - x1);

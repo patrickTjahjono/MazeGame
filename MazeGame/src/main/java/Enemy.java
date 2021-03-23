@@ -34,10 +34,10 @@ public class Enemy extends MovingCharacter{
             int bestMoveIndex = -1;
 
             // squared distances from each cell (adjacent of the enemy) to the player
-            squaredDistances[0] = boardState.calculateSquaredDistance(enemyX - 1, enemyY, playerX, playerY);
-            squaredDistances[1] = boardState.calculateSquaredDistance(enemyX + 1, enemyY, playerX, playerY);
-            squaredDistances[2] = boardState.calculateSquaredDistance(enemyX, enemyY - 1, playerX, playerY);
-            squaredDistances[3] = boardState.calculateSquaredDistance(enemyX, enemyY + 1, playerX, playerY);
+            squaredDistances[0] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX - 1, enemyY, playerX, playerY);
+            squaredDistances[1] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX + 1, enemyY, playerX, playerY);
+            squaredDistances[2] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX, enemyY - 1, playerX, playerY);
+            squaredDistances[3] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX, enemyY + 1, playerX, playerY);
 
             for (int i = 0; i < 4; i++) {
                 if (bestMoveDistance > squaredDistances[i]) {
@@ -75,6 +75,7 @@ public class Enemy extends MovingCharacter{
             Board.getInstance().setContinue_game(0);
         }
 
+        boardState.boardStateCells[this.getX()][this.getY()].setContainsEnemy(0);
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
             leave_reward_R();
         } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
@@ -93,6 +94,7 @@ public class Enemy extends MovingCharacter{
             this.moveSouth();
         }
 
+        boardState.boardStateCells[this.getX()][this.getY()].setContainsEnemy(1);
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
             touch_reward_R();
         } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {

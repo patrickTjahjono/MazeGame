@@ -3,6 +3,7 @@ public class Cell extends Position {
     private int containsReward;
     private int containsBonusReward;
     private int containsPunishment;
+    private int containsEnemy;
     private int containEndCell;
 
     public Cell(int x, int y, int isSolid) {
@@ -54,6 +55,15 @@ public class Cell extends Position {
             return 0;
         }
     }
+
+    public int getContainsEnemy() {
+        return containsEnemy;
+    }
+
+    public void setContainsEnemy(int containsEnemy) {
+        this.containsEnemy = containsEnemy;
+    }
+
     public void setContainEndCell(int containEndCell) {
         this.containEndCell = containEndCell;
     }
