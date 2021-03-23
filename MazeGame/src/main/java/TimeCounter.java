@@ -4,9 +4,11 @@ import java.awt.*;
 public class TimeCounter {
     private static TimeCounter instance;
     private float time;
+    private int turn;
     JLabel label;
 
     private TimeCounter() {
+        turn = 0;
         time = 0;
         // assigning label 'T' 'U' 'R' 'N' ':' '0' for each panel
         JLabel temp;
@@ -45,6 +47,7 @@ public class TimeCounter {
 
     public void updateTime() {
         this.time += 0.5;
+        turn += 1;
         //remove the 0 panel and then add the updated one
         Board.getInstance().getCells()[15][0].remove(label);
         label = new JLabel(String.valueOf(time));
@@ -55,5 +58,9 @@ public class TimeCounter {
 
     public float getTime() {
         return this.time;
+    }
+
+    public int getTurn() {
+        return turn;
     }
 }

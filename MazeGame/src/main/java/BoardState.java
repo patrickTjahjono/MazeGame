@@ -166,7 +166,7 @@ public class BoardState {
     }
 
     public void checkBonusRewardExpiration() {
-        TurnCounter turnCounter = TurnCounter.getInstance();
+        TimeCounter turnCounter = TimeCounter.getInstance();
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
         BonusReward BR = boardState.getBonusReward();
