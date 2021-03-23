@@ -7,17 +7,17 @@ public class Main {
     public static void main(String[] args) {
         JFrame MazeFrame = new JFrame("MazeGame");
         // create board (GUI)
-        Board board = new Board();
+        Board board = Board.getInstance();
         MazeFrame.add(board);
         MazeFrame.pack();
         MazeFrame.setLocationRelativeTo(null);
         MazeFrame.setVisible(true);
 
         // create board states
-        BoardState boardState = new BoardState(board,20, 10);
+        BoardState boardState = BoardState.getInstance();
 
         try {
-            Player player1 = new Player(0, 1);
+            Player player1 = Player.getInstance();
             Enemy enemy1 = new Enemy(18, 8);
             MazeFrame.addKeyListener(player1);
 
@@ -33,11 +33,11 @@ public class Main {
             while(continue_game == 1) {
                 try {
                     Thread.sleep(500);
-                    player1.move(board, boardState);
+                    player1.move();
 
                     // check if any enemies have caught up with the player
-                    if (enemy1.getCurrentSquaredDistanceToPlayer(player1, boardState) != 1) {
-                        enemy1.move(board, boardState, player1);
+                    if (enemy1.getCurrentSquaredDistanceToPlayer() != 1) {
+                        enemy1.move();
                         SwingUtilities.updateComponentTreeUI(MazeFrame);
                     } else { // enemy has caught up to player
                         continue_game = 0;

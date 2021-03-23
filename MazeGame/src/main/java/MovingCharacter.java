@@ -13,7 +13,9 @@ abstract class MovingCharacter extends Position{
         return label;
     }
 
-    protected void moveWest(Board board, BoardState boardState) {
+    protected void moveWest() {
+        Board board = Board.getInstance();
+        BoardState boardState = BoardState.getInstance();
         int currentX = this.getX();
         int currentY = this.getY();
         int nextX = currentX - 1;
@@ -26,7 +28,9 @@ abstract class MovingCharacter extends Position{
         }
     }
 
-    protected void moveEast(Board board, BoardState boardState) {
+    protected void moveEast() {
+        Board board = Board.getInstance();
+        BoardState boardState = BoardState.getInstance();
         int currentX = this.getX();
         int currentY = this.getY();
         int nextX = currentX + 1;
@@ -38,7 +42,9 @@ abstract class MovingCharacter extends Position{
         }
     }
 
-    protected void moveNorth(Board board, BoardState boardState) {
+    protected void moveNorth() {
+        Board board = Board.getInstance();
+        BoardState boardState = BoardState.getInstance();
         int currentX = this.getX();
         int currentY = this.getY();
         int nextY = currentY - 1;
@@ -50,7 +56,9 @@ abstract class MovingCharacter extends Position{
         }
     }
 
-    protected void moveSouth(Board board, BoardState boardState) {
+    protected void moveSouth() {
+        Board board = Board.getInstance();
+        BoardState boardState = BoardState.getInstance();
         int currentX = this.getX();
         int currentY = this.getY();
         int nextY = currentY + 1;
