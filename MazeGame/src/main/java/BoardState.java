@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class BoardState {
     private static BoardState instance = null;
+    private ArrayList<Punishment> punishments = new ArrayList<>();
     private ArrayList<Rewards> rewards_R = new ArrayList<>();
     private int width, height;
     public Cell[][] boardStateCells;
@@ -44,6 +45,30 @@ public class BoardState {
             }
         }
 
+        // generate punishments
+        int maxNumPunishments = 5;
+        int numPunishments= 0;
+        while (numPunishments < 1) {
+            for (int y = 1; y < height - 1; y++) {
+                for (int x = 1; x < width - 1; x++) {
+                    if (numPunishments < maxNumPunishments &&
+                            boardStateCells[x][y].getContainsRewardOrPunishment() == 0 &&
+                            boardStateCells[x][y].getIsSolid() == 0 &&
+                            random.nextFloat() < 0.05) {
+                        try {
+                            Punishment p = new Punishment(x, y);
+                            punishments.add(p);
+                            boardStateCells[x][y].setContainsPunishment(1);
+                            numPunishments++;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        // generate rewards
         int maxNumRewards = 10;
         int numRewards = 0;
         while (numRewards < 1) {
@@ -116,5 +141,6 @@ public class BoardState {
         return squaredDistance;
     }
 
-    public ArrayList<Rewards> getReward_R() {return rewards_R;}
+    public ArrayList<Rewards> getReward_R() { return rewards_R; }
+    public ArrayList<Punishment> getPunishments() { return punishments;}
 }
