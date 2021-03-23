@@ -32,8 +32,9 @@ public class Main {
                 try {
                     Thread.sleep(500);
                     turnCounter.updateTurn();
+                    boardState.spawnBR();
+                    boardState.checkBonusRewardExpiration();
                     player1.move();
-                    //System.out.println(board.continue_game);
                     enemy1.move();
                     SwingUtilities.updateComponentTreeUI(MazeFrame);
                 } catch (InterruptedException e) {

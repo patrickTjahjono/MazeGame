@@ -77,6 +77,10 @@ public class Player extends MovingCharacter implements KeyListener {
             touch_punishment();
         }
 
+        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsBonusReward() == 1) {
+            touch_bonus_reward();
+        }
+
         // When player reaches end cell sets continue_game to zero
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainEndCell() == 1) {
             if (this.allRewardsCollected() == 1) {
@@ -97,6 +101,18 @@ public class Player extends MovingCharacter implements KeyListener {
                 boardState.boardStateCells[rewardX][rewardY].setContainsReward(0);
             }
         }
+    }
+
+    public void touch_bonus_reward(){
+        BoardState boardState = BoardState.getInstance();
+        BonusReward BR = boardState.getBonusReward();
+        int bonusRewardX = BR.getX();
+        int bonusRewardY = BR.getY();
+        if (bonusRewardX == this.getX() && bonusRewardY == this.getY()) {
+            BR.collectedBR();
+            boardState.boardStateCells[bonusRewardX][bonusRewardY].setContainsBonusReward(0);
+        }
+
     }
 
     public void touch_punishment(){
