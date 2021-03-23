@@ -5,7 +5,7 @@ import javax.swing.border.Border;
 public class Board extends JPanel {
     private static Board instance = null;
     private JPanel[][] cells;
-    public int continue_game;   // check status of player
+    private int continue_game;   // check status of player
 
     public static Board getInstance() {
         if (instance == null)
@@ -33,5 +33,13 @@ public class Board extends JPanel {
 
     public JPanel[][] getCells() {
         return cells;
+    }
+
+    public int getContinue_game() {
+        return continue_game;
+    }
+
+    public void setContinue_game(int i) {
+        this.continue_game = i;
     }
 }
