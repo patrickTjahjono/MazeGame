@@ -91,13 +91,16 @@ public class BoardState {
             }
         }
 
+        JPanel[][] cells = board.getCells();
         // set start and end cells
         boardStateCells[width - 1][height - 2].setIsSolid(0);
         boardStateCells[0][1].setIsSolid(0);
+        cells[0][1].setBackground(Color.GREEN);
         this.boardStateCells = boardStateCells;
+        boardStateCells[width - 1][height - 2].setContainEndCell(1);
+        cells[width - 1][height - 2].setBackground(Color.ORANGE);
 
         // shade in solid cells
-        JPanel[][] cells = board.getCells();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (boardStateCells[x][y].getIsSolid() == 1) {
