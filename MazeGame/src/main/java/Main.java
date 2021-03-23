@@ -41,6 +41,7 @@ public class Main {
                     e.printStackTrace();
                 }
             }
+            SwingUtilities.updateComponentTreeUI(MazeFrame);
             
             // If continue_game is 0 ouput WinScreen or LoseScreen
             // haven't set condition for scores yet
