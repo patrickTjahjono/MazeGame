@@ -8,6 +8,8 @@ public class BoardState {
     private static BoardState instance = null;
     private ArrayList<Punishment> punishments = new ArrayList<>();
     private ArrayList<Rewards> rewards_R = new ArrayList<>();
+    private BonusReward bonusReward = null;
+    private int hasBonusReward = 0;
     private int width, height;
     public Cell[][] boardStateCells;
 
@@ -47,8 +49,9 @@ public class BoardState {
 
         // generate punishments
         int maxNumPunishments = 5;
-        int numPunishments= 0;
-        while (numPunishments < 1) {
+        int minNumPunishments = 2;
+        int numPunishments = 0;
+        while (numPunishments < minNumPunishments) {
             for (int y = 2; y < height - 1; y++) {
                 for (int x = 1; x < width - 1; x++) {
                     if (numPunishments < maxNumPunishments &&
@@ -69,9 +72,10 @@ public class BoardState {
         }
 
         // generate rewards
-        int maxNumRewards = 10;
+        int maxNumRewards = 5;
+        int minNumRewards = 2;
         int numRewards = 0;
-        while (numRewards < 1) {
+        while (numRewards < minNumRewards) {
             for (int y = 1; y < height - 1; y++) {
                 for (int x = 1; x < width - 1; x++) {
                     if (numRewards < maxNumRewards &&
@@ -126,6 +130,56 @@ public class BoardState {
         }
     }
 
+    public void setBonusReward(BonusReward bonusReward) {
+        this.bonusReward = bonusReward;
+    }
+
+    public int getHasBonusReward() {
+        return hasBonusReward;
+    }
+
+    public void setHasBonusReward(int hasBonusReward) {
+        this.hasBonusReward = hasBonusReward;
+    }
+
+    public void spawnBR() {
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        Random random = new Random();
+        if (boardState.getHasBonusReward() == 0) {
+            if (random.nextFloat() < 0.05) {
+                int bonusRewardX = random.nextInt(boardState.getWidth());
+                int bonusRewardY = random.nextInt(boardState.getHeight());
+                if (boardState.getCellIsSolid(bonusRewardX, bonusRewardY) == 0 &&
+                    boardState.boardStateCells[bonusRewardX][bonusRewardY].getContainsRewardOrPunishment() == 0) {
+                    try {
+                        BonusReward BR = new BonusReward(bonusRewardX, bonusRewardY);
+                        boardState.boardStateCells[bonusRewardX][bonusRewardY].setContainsBonusReward(1);
+                        boardState.setBonusReward(BR);
+                        boardState.setHasBonusReward(1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    public void checkBonusRewardExpiration() {
+        TurnCounter turnCounter = TurnCounter.getInstance();
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        BonusReward BR = boardState.getBonusReward();
+        int currentTurn = turnCounter.getTurn();
+        if (BR != null && currentTurn > BR.getExpiresAfter()) {
+            int bonusRewardX = BR.getX();
+            int bonusRewardY = BR.getY();
+            board.getCells()[bonusRewardX][bonusRewardY].remove(BR.getLabel());
+            boardState.boardStateCells[bonusRewardX][bonusRewardY].setContainsBonusReward(0);
+            boardState.setHasBonusReward(0);
+        }
+    }
+
     public int calculateSquaredDistance(int x1, int y1, int x2, int y2) {
         int squaredDistance;
         // check bounds
@@ -145,5 +199,6 @@ public class BoardState {
     }
 
     public ArrayList<Rewards> getReward_R() { return rewards_R; }
-    public ArrayList<Punishment> getPunishments() { return punishments;}
+    public ArrayList<Punishment> getPunishments() { return punishments; }
+    public BonusReward getBonusReward() { return this.bonusReward; }
 }

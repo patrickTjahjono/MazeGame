@@ -31,15 +31,17 @@ public class Main {
             while(board.getContinue_game() == 1) {
                 try {
                     Thread.sleep(500);
-                    timeCounter.updateTime();
+                    turnCounter.updateTurn();
+                    boardState.spawnBR();
+                    boardState.checkBonusRewardExpiration();
                     player1.move();
-                    //System.out.println(board.continue_game);
                     enemy1.move();
                     SwingUtilities.updateComponentTreeUI(MazeFrame);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            SwingUtilities.updateComponentTreeUI(MazeFrame);
             
             // If continue_game is 0 ouput WinScreen or LoseScreen
             // haven't set condition for scores yet
