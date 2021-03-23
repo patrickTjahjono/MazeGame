@@ -71,6 +71,10 @@ public class Enemy extends MovingCharacter{
         Player player = Player.getInstance();
         String bestMove = getBestMove();
 
+        if (this.getCurrentSquaredDistanceToPlayer() == 1) {
+            Board.getInstance().setContinue_game(0);
+        }
+
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
             leave_reward_R();
         } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {

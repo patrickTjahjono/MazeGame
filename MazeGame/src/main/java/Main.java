@@ -28,20 +28,14 @@ public class Main {
 
             //int turn = 0;
             // checks continue_game value from board
-            int continue_game = board.continue_game;
-            while(continue_game == 1) {
+            while(board.getContinue_game() == 1) {
                 try {
                     Thread.sleep(500);
                     turnCounter.updateTurn();
                     player1.move();
-
-                    // check if any enemies have caught up with the player
-                    if (enemy1.getCurrentSquaredDistanceToPlayer() != 1) {
-                        enemy1.move();
-                        SwingUtilities.updateComponentTreeUI(MazeFrame);
-                    } else { // enemy has caught up to player
-                        continue_game = 0;
-                    }
+                    //System.out.println(board.continue_game);
+                    enemy1.move();
+                    SwingUtilities.updateComponentTreeUI(MazeFrame);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -49,7 +43,7 @@ public class Main {
             
             // If continue_game is 0 ouput WinScreen or LoseScreen
             // haven't set condition for scores yet
-            if( continue_game == 0) {
+            if(board.getContinue_game() == 0) {
                 if(player1.isAtEnd == true) {
                     System.out.println("reached end cell");
                     MazeFrame.setVisible(false);
