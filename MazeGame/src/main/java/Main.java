@@ -27,7 +27,8 @@ public class Main {
             SwingUtilities.updateComponentTreeUI(MazeFrame);
 
             //int turn = 0;
-            int continue_game = 1;
+            // checks continue_game value from board
+            int continue_game = board.continue_game;
             while(continue_game == 1) {
                 try {
                     Thread.sleep(500);
@@ -43,6 +44,23 @@ public class Main {
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+            }
+            
+            // If continue_game is 0 ouput WinScreen or LoseScreen
+            // haven't set condition for scores yet
+            if( continue_game == 0) {
+                if(player1.isAtEnd == true) {
+                    System.out.println("reached end cell");
+                    MazeFrame.setVisible(false);
+                    EndScreen win = new EndScreen();
+                    MazeFrame.setContentPane(win);
+                    MazeFrame.setVisible(true);
+                } else {
+                    System.out.println("caught by enemy");
+                    LostScreen lose = new LostScreen();
+                    MazeFrame.setContentPane(lose);
+                    MazeFrame.setVisible(true);
                 }
             }
         } catch (IOException e) {
