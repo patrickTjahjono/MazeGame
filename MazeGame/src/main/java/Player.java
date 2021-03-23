@@ -80,7 +80,7 @@ public class Player extends MovingCharacter implements KeyListener {
         // When player reaches end cell sets continue_game to zero
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainEndCell() == 1) {
             if (this.allRewardsCollected() == 1) {
-                Board.getInstance().continue_game = 0;
+                Board.getInstance().setContinue_game(0);
                 this.isAtEnd = true;
             }
         }
