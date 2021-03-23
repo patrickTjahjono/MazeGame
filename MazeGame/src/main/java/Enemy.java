@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Enemy extends MovingCharacter{
-    private int delay;// enemy will pause every 2 step
     public Enemy(int x, int y) throws IOException
     {
         super(x, y);
         Image image = ImageIO.read(new File("src/ghost.png"));
         this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));
-        delay = 0;
 
         // set enemy on Board at position (x, y)
         Board board = Board.getInstance();
@@ -68,11 +66,6 @@ public class Enemy extends MovingCharacter{
     }
 
     public void move() {
-        if (delay == 2)
-        {
-            delay = 0;
-            return;
-        }
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
         Player player = Player.getInstance();
@@ -86,6 +79,8 @@ public class Enemy extends MovingCharacter{
             leave_reward_R();
         } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
             leave_punishment();
+        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsBonusReward() == 1) {
+            leave_bonus_reward();
         }
 
         if (bestMove.equals("w")) {
@@ -102,8 +97,9 @@ public class Enemy extends MovingCharacter{
             touch_reward_R();
         } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
             touch_punishment();
+        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsBonusReward() == 1) {
+            touch_bonus_reward();
         }
-        delay++;
     }
 
     public void touch_reward_R(){
@@ -130,6 +126,20 @@ public class Enemy extends MovingCharacter{
                 board.getCells()[rewardX][rewardY].add(reward.getLabel());
             }
         }
+    }
+
+    public void touch_bonus_reward(){
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        BonusReward BR = boardState.getBonusReward();
+        board.getCells()[BR.getX()][BR.getY()].remove(BR.getLabel());
+    }
+
+    public void leave_bonus_reward(){
+        BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
+        BonusReward BR = boardState.getBonusReward();
+        board.getCells()[BR.getX()][BR.getY()].add(BR.getLabel());
     }
 
     public void touch_punishment(){
