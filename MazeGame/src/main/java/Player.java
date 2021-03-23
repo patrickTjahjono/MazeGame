@@ -4,6 +4,7 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class Player extends MovingCharacter implements KeyListener {
@@ -55,6 +56,7 @@ public class Player extends MovingCharacter implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     public void move() {
+        BoardState boardState = BoardState.getInstance();
         if (this.nextMove.equals("w")) {
             this.moveWest();
         } else if (this.nextMove.equals("e")) {
@@ -65,6 +67,25 @@ public class Player extends MovingCharacter implements KeyListener {
             this.moveSouth();
         }
         this.nextMove = "None";
+
+        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {
+            touch_reward_R();
+        }
+
     }
+
+    public void touch_reward_R(){
+        BoardState boardState = BoardState.getInstance();
+        ArrayList<Rewards> rewards = boardState.getReward_R();
+        for (Rewards reward : rewards) {
+            int rewardX = reward.getX();
+            int rewardY = reward.getY();
+            if (rewardX == this.getX() && rewardY == this.getY()) {
+                reward.collectedRR();
+                boardState.boardStateCells[rewardX][rewardY].setContainsReward(0);
+            }
+        }
+    }
+
 
 }
