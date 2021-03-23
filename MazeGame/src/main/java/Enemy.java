@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Enemy extends MovingCharacter{
+    private int delay;// enemy will pause every 2 step
     public Enemy(int x, int y) throws IOException
     {
         super(x, y);
         Image image = ImageIO.read(new File("src/ghost.png"));
         this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));
+        delay = 0;
 
         // set enemy on Board at position (x, y)
         Board board = Board.getInstance();
@@ -66,6 +68,11 @@ public class Enemy extends MovingCharacter{
     }
 
     public void move() {
+        if (delay == 2)
+        {
+            delay = 0;
+            return;
+        }
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
         Player player = Player.getInstance();
@@ -96,6 +103,7 @@ public class Enemy extends MovingCharacter{
         } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
             touch_punishment();
         }
+        delay++;
     }
 
     public void touch_reward_R(){
