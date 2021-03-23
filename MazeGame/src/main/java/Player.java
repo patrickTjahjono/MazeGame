@@ -7,8 +7,22 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class Player extends MovingCharacter implements KeyListener {
+    private static Player instance = null;
     private String nextMove = "None";
-    public Player(int x, int y) throws IOException
+
+    public static Player getInstance() {
+        if (instance == null) {
+            try {
+                instance = new Player(0, 1);
+                return instance;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
+
+    private Player(int x, int y) throws IOException
     {
         super(x, y);
         Image image = ImageIO.read(new File("src/playertest.png"));
@@ -36,15 +50,15 @@ public class Player extends MovingCharacter implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {}
 
-    public void move(Board board, BoardState boardState) {
+    public void move() {
         if (this.nextMove.equals("w")) {
-            this.moveWest(board, boardState);
+            this.moveWest();
         } else if (this.nextMove.equals("e")) {
-            this.moveEast(board, boardState);
+            this.moveEast();
         } else if (this.nextMove.equals("n")) {
-            this.moveNorth(board, boardState);
+            this.moveNorth();
         } else if (this.nextMove.equals("s")) {
-            this.moveSouth(board, boardState);
+            this.moveSouth();
         }
         this.nextMove = "None";
     }

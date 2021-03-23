@@ -3,12 +3,20 @@ import javax.swing.*;
 import java.util.Random;
 
 public class BoardState {
+    private static BoardState instance = null;
     private int width, height;
     public Cell[][] boardState;
 
-    public BoardState(Board board, int width, int height) {
-        this.width = width;
-        this.height = height;
+    public static BoardState getInstance() {
+        if (instance == null)
+            instance = new BoardState();
+        return instance;
+    }
+
+    private BoardState() {
+        Board board = Board.getInstance();
+        this.width = 20;
+        this.height = 10;
 
         Cell[][] boardState = new Cell[width][height];
 
