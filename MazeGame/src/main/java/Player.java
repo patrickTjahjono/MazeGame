@@ -10,6 +10,7 @@ import javax.swing.*;
 public class Player extends MovingCharacter implements KeyListener {
     private static Player instance = null;
     private String nextMove = "None";
+    public boolean isAtEnd = false;
 
     public static Player getInstance() {
         if (instance == null) {
@@ -74,6 +75,12 @@ public class Player extends MovingCharacter implements KeyListener {
 
         if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {
             touch_punishment();
+        }
+
+        // When player reaches end cell sets continue_game to zero
+        if (boardState.boardStateCells[this.getX()][this.getY()].getContainEndCell() == 1) {
+            Board.getInstance().continue_game = 0;
+            this.isAtEnd = true;
         }
     }
 
