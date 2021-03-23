@@ -100,7 +100,9 @@ public class Player extends MovingCharacter implements KeyListener {
     }
 
     public void touch_punishment(){
+        ScoreBoard scoreBoard = ScoreBoard.getInstance();
         BoardState boardState = BoardState.getInstance();
+        Board board = Board.getInstance();
         ArrayList<Punishment> punishments = boardState.getPunishments();
         for (Punishment punishment : punishments) {
             int punishmentX = punishment.getX();
@@ -109,6 +111,11 @@ public class Player extends MovingCharacter implements KeyListener {
                 punishment.collectedPunishment();
                 boardState.boardStateCells[punishmentX][punishmentY].setContainsPunishment(0);
             }
+        }
+
+        // end game if score is negative
+        if (scoreBoard.getScore() < 0) {
+            Board.getInstance().setContinue_game(0);
         }
     }
 
