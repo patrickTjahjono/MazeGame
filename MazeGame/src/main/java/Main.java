@@ -16,7 +16,7 @@ public class Main {
         // create board states
         BoardState boardState = BoardState.getInstance();
         ScoreBoard scoreboard = ScoreBoard.getInstance();
-        TurnCounter turnCounter = TurnCounter.getInstance();
+        TimeCounter timeCounter = TimeCounter.getInstance();
 
         try {
             Player player1 = Player.getInstance();
@@ -28,11 +28,11 @@ public class Main {
             SwingUtilities.updateComponentTreeUI(MazeFrame);
 
             //int turn = 0;
-            // checks continue_game value from board
+            // checks continue_game value from  board
             while(board.getContinue_game() == 1) {
                 try {
                     Thread.sleep(500);
-                    turnCounter.updateTurn();
+                    timeCounter.updateTime();
                     boardState.spawnBR();
                     boardState.checkBonusRewardExpiration();
                     player1.move();

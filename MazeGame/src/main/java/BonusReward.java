@@ -12,7 +12,7 @@ public class BonusReward extends Position {
 
     public BonusReward(int x, int y) throws IOException {
         super(x, y);
-        TurnCounter turnCounter = TurnCounter.getInstance();
+        TimeCounter turnCounter = TimeCounter.getInstance();
         Random random = new Random();
         this.expiresAfter = turnCounter.getTurn() + random.nextInt(100);
 
