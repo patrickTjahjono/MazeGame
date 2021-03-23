@@ -20,7 +20,8 @@ public class Main {
 
         try {
             Player player1 = Player.getInstance();
-            Enemy enemy1 = new Enemy(18, 8);
+            Enemy enemy1 = new Enemy(18, 9);
+            Enemy enemy2 = new Enemy(13, 7);
             MazeFrame.addKeyListener(player1);
 
             // update board to display the starting position of the player
@@ -36,6 +37,7 @@ public class Main {
                     boardState.checkBonusRewardExpiration();
                     player1.move();
                     enemy1.move();
+                    enemy2.move();
                     SwingUtilities.updateComponentTreeUI(MazeFrame);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
