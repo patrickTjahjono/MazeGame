@@ -27,6 +27,10 @@ public class Player extends MovingCharacter implements KeyListener {
         super(x, y);
         Image image = ImageIO.read(new File("src/playertest.png"));
         this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));
+
+        // set player on Board at position (x, y)
+        Board board = Board.getInstance();
+        board.getCells()[x][y].add(label);
     }
 
     @Override

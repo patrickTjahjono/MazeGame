@@ -11,6 +11,10 @@ public class Enemy extends MovingCharacter{
         super(x, y);
         Image image = ImageIO.read(new File("src/ghost.png"));
         this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));
+
+        // set enemy on Board at position (x, y)
+        Board board = Board.getInstance();
+        board.getCells()[x][y].add(label);
     }
 
     private String getBestMove() {

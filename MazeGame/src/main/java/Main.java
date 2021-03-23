@@ -22,10 +22,6 @@ public class Main {
             MazeFrame.addKeyListener(player1);
 
             // update board to display the starting position of the player
-            JPanel[][] cells = board.getCells();
-            cells[player1.getX()][player1.getY()].add(player1.getLabel());
-            cells[enemy1.getX()][enemy1.getY()].add(enemy1.getLabel());
-            cells[player1.getX()][player1.getY()].add(player1.getLabel());
             SwingUtilities.updateComponentTreeUI(MazeFrame);
 
             //int turn = 0;
@@ -46,7 +42,6 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
