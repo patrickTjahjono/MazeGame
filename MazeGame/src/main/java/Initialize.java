@@ -70,12 +70,10 @@ public class Initialize {
             // haven't set condition for scores yet
             if(board.getContinue_game() == 0) {
                 if(player1.isAtEnd == true) {
-                    System.out.println("reached end cell");
                     MazeFrame.setVisible(false);
                     EndScreen win = new EndScreen();
                     MazeFrame.setContentPane(win);
                 } else {
-                    System.out.println("caught by enemy");
                     LostScreen lose = new LostScreen();
                     MazeFrame.setContentPane(lose);
                 }
