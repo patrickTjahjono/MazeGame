@@ -55,7 +55,6 @@ public class Initialize {
                 player1.move();
                 if(board.getPause_game())
                     continue;
-
                 try {
                     Thread.sleep(500);
                     timeCounter.updateTime();
@@ -68,7 +67,6 @@ public class Initialize {
                     e.printStackTrace();
                 }
             }
-            SwingUtilities.updateComponentTreeUI(MazeFrame);
 
             // If continue_game is 0 output WinScreen or LoseScreen
             if(board.getContinue_game() == 0) {
