@@ -6,7 +6,7 @@ import java.io.IOException;
 
 /**
  * 
- * The Punishment class creates the GUI object for punishment and position the obejct on board. 
+ * The Punishment class creates the GUI object for punishment and position the object on board.
  * If player's position collides with punishment's position, punishment JLabel gets removed from board, and scoreBoard gets updated.
  */
 public class Punishment extends Position{
@@ -17,7 +17,7 @@ public class Punishment extends Position{
      * Creates a new Punishment on Board at (x, y) position. 
      * 
      * @param x the x coordinate that the punishment object to be placed on, range from [0, 19].
-     * @param y the y coordinate that the punihsment object to be placed on, range from [0, 20].
+     * @param y the y coordinate that the punishment object to be placed on, range from [0, 20].
      * @throws IOException if (x, y) coordinate is out of range.
      */
     public Punishment(int x, int y) throws IOException {
@@ -38,7 +38,7 @@ public class Punishment extends Position{
     }
 
     /**
-     * Gets the intance of BoardState and checks if Puishment is collected by the player.
+     * Gets the instance of BoardState and checks if Punishment is collected by the player.
      * If punishment is collected, the method gets the instance of the ScoreBoard and Board. 
      * Player's score gets updated (-5), collected punishment's JLabel gets removed from cell.
      */

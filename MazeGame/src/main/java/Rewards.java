@@ -38,7 +38,7 @@ public class Rewards extends Position{
     }
 
     /**
-     * Gets the intance of BoardState and checks if regular reward is collected by the player.
+     * Gets the instance of BoardState and checks if regular reward is collected by the player.
      * If reward is collected, the method gets the instance of the ScoreBoard and Board. 
      * Player's score gets updated (+5), collected reward's JLabel gets removed from cell.
      */

@@ -22,7 +22,7 @@ abstract class MovingCharacter extends Position{
 
     /**
      * 
-     * @return JLablel of player 
+     * @return JLabel of player
      */
     public JLabel getLabel() {
         return label;
@@ -49,7 +49,7 @@ abstract class MovingCharacter extends Position{
 
     /**
      * The method moveEast gets the instance of Board and BoardState and 
-     * moves the position of the obbject to its right by 1. 
+     * moves the position of the object to its right by 1.
      */
     protected void moveEast() {
         Board board = Board.getInstance();
