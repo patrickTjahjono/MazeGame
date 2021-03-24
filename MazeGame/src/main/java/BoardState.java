@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * BoardState stores information about the states of each (x, y) position
+ * on the Board. It also creates and keeps track of the start cell, end cell,
+ * walls, punishments and regular rewards.
+ */
 public class BoardState {
     private static BoardState instance = null;
     private ArrayList<Punishment> punishments = new ArrayList<>();
@@ -13,12 +18,21 @@ public class BoardState {
     private int width, height;
     public Cell[][] boardStateCells;
 
+    /**
+     * @return the existing instance of BoardState or a new instance of BoardState if one does not exist.
+     */
     public static BoardState getInstance() {
         if (instance == null)
             instance = new BoardState();
         return instance;
     }
 
+    /**
+     * Create a new BoardState to keep track of each (x, y) position's state. BoardState consists of
+     * ArrayLists of Punishment and Rewards, a BonusReward along with a 2D array of Cells that store
+     * information about each (x, y) position on the Board. It also records the width (20) and
+     * height (10) of the Board and keeps track of whether there is a BonusReward in existence.
+     */
     private BoardState() {
         Board board = Board.getInstance();
         this.width = 20;
@@ -95,8 +109,8 @@ public class BoardState {
             }
         }
 
-        JPanel[][] cells = board.getCells();
         // set start and end cells
+        JPanel[][] cells = board.getCells();
         boardStateCells[width - 1][height - 2].setIsSolid(0);
         boardStateCells[0][1].setIsSolid(0);
         cells[0][1].setBackground(Color.GREEN);
@@ -114,14 +128,25 @@ public class BoardState {
         }
     }
 
+    /**
+     * @return width of the Board in Cells
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * @return height of the Board in Cells
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * @param x the x coordinate of the Cell to be checked - is limited to the interval [0, 19]
+     * @param y the y coordinate of the Cell to be checked - is limited to the interval [0, 9]
+     * @return whether the Cell is solid (1) or not solid (0) or does not exist/is out of range (-1)
+     */
     public int getCellIsSolid(int x, int y) {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
             return (this.boardStateCells[x][y].getIsSolid());
@@ -130,6 +155,12 @@ public class BoardState {
         }
     }
 
+    /**
+     * @param x the x coordinate of the Cell to be checked - is limited to the interval [0, 19]
+     * @param y the y coordinate of the Cell to be checked - is limited to the interval [0, 9]
+     * @return whether the Cell contains an Enemy (1), does not contain an Enemy (0)
+     *         or does not exist/is out of range (-1)
+     */
     public int getCellContainsEnemy(int x, int y) {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
             return (this.boardStateCells[x][y].getContainsEnemy());
@@ -138,14 +169,23 @@ public class BoardState {
         }
     }
 
+    /**
+     * @param bonusReward newly spawned BonusReward
+     */
     public void setBonusReward(BonusReward bonusReward) {
         this.bonusReward = bonusReward;
     }
 
+    /**
+     * @return whether there is a BonusReward in existence
+     */
     public int getHasBonusReward() {
         return hasBonusReward;
     }
 
+    /**
+     * @param hasBonusReward whether there is a BonusReward in existence
+     */
     public void setHasBonusReward(int hasBonusReward) {
         this.hasBonusReward = hasBonusReward;
     }
@@ -173,6 +213,10 @@ public class BoardState {
         }
     }
 
+    /**
+     * Check whether the BonusReward has expired. Do nothing if a BonusReward does not exist
+     * or has not expired.
+     */
     public void checkBonusRewardExpiration() {
         TimeCounter turnCounter = TimeCounter.getInstance();
         BoardState boardState = BoardState.getInstance();
@@ -188,9 +232,18 @@ public class BoardState {
         }
     }
 
+    /**
+     * Used to check whether an enemy has caught up the the player (if it is the
+     * enemy's turn and the squared distance between the player and the enemy is 1)
+     *
+     * @param x1 the x coordinate of an enemy - is limited to the interval [0, 19]
+     * @param y1 the y coordinate of an enemy - is limited to the interval [0, 9]
+     * @param x2 the x coordinate of the player - is limited to the interval [0, 19]
+     * @param y2 the y coordinate of the player - is limited to the interval [0, 9]
+     * @return
+     */
     public int calculateSquaredDistance(int x1, int y1, int x2, int y2) {
         int squaredDistance;
-        // check bounds
 
         int cell1IsSolid = getCellIsSolid(x1, y1);
         int cell2IsSolid = getCellIsSolid(x2, y2);
@@ -206,15 +259,25 @@ public class BoardState {
         return squaredDistance;
     }
 
+    /**
+     * Used in the enemy's path finding algorithm. This method is identical to
+     * calculateSquaredDistance with the exception of an additional check which
+     * ensures that enemies will not move to Cells that contain another enemy.
+     *
+     * @param x1 the x coordinate of an enemy - is limited to the interval [0, 19]
+     * @param y1 the y coordinate of an enemy - is limited to the interval [0, 9]
+     * @param x2 the x coordinate of the player - is limited to the interval [0, 19]
+     * @param y2 the y coordinate of the player - is limited to the interval [0, 9]
+     * @return
+     */
     public int calculateSquaredDistanceWithEnemyCheck(int x1, int y1, int x2, int y2) {
         int squaredDistance;
-        // check bounds
 
         int cell1IsSolid = getCellIsSolid(x1, y1);
         int cell2IsSolid = getCellIsSolid(x2, y2);
         int cell1ContainsEnemy = getCellContainsEnemy(x1, y1);
 
-        // Set squaredDistance to 2147483647 if a cell is solid or out of bounds
+        // Set squaredDistance to 2147483647 if a cell is solid, out of bounds or contains an enemy
         if ((cell1IsSolid != 0) || (cell1ContainsEnemy == 1) || (cell2IsSolid != 0)) {
             squaredDistance = Integer.MAX_VALUE;
         } else {
@@ -225,7 +288,19 @@ public class BoardState {
         return squaredDistance;
     }
 
+    /**
+     * @return all generated Rewards
+     */
     public ArrayList<Rewards> getReward_R() { return rewards_R; }
+
+
+    /**
+     * @return all generated Punishments
+     */
     public ArrayList<Punishment> getPunishments() { return punishments; }
+
+    /**
+     * @return the generated BonusReward
+     */
     public BonusReward getBonusReward() { return this.bonusReward; }
 }
