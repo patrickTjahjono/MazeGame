@@ -4,8 +4,8 @@ import java.io.IOException;
 
 /**
  * 
- * The abstract MovingCharacter controls the movement of the player by altering it's cell position on board. 
- * Player is restricted from moving onto cells that is solid, and no object is created from MovingCharacter.
+ * The abstract MovingCharacter controls the movement of the player and/or enemy by altering it's cell position on board. 
+ * Player and enemies are restricted from moving onto cells that is solid, and no object is created from MovingCharacter.
  */
 abstract class MovingCharacter extends Position{
     protected JLabel label;
@@ -30,7 +30,7 @@ abstract class MovingCharacter extends Position{
 
     /**
      * The method moveWest gets the instance of Board and BoardState and 
-     * moves the position of the player to its left by 1. 
+     * moves the position of the object to its left by 1. 
      */
     protected void moveWest() {
         Board board = Board.getInstance();
@@ -49,7 +49,7 @@ abstract class MovingCharacter extends Position{
 
     /**
      * The method moveEast gets the instance of Board and BoardState and 
-     * moves the position of the player to its right by 1. 
+     * moves the position of the obbject to its right by 1. 
      */
     protected void moveEast() {
         Board board = Board.getInstance();
@@ -67,7 +67,7 @@ abstract class MovingCharacter extends Position{
 
     /**
      * The method moveNorth gets the instance of Board and BoardState and 
-     * moves the position of the player down by 1. 
+     * moves the position of the object down by 1. 
      */
     protected void moveNorth() {
         Board board = Board.getInstance();
@@ -85,7 +85,7 @@ abstract class MovingCharacter extends Position{
 
     /**
      * The method moveWest gets the instance of Board and BoardState and 
-     * moves the position of the player up by 1. 
+     * moves the position of the object up by 1. 
      */
     protected void moveSouth() {
         Board board = Board.getInstance();
