@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.io.IOException;
 
+/**
+ * Initialize creates Board, BoardState, ScoreBoard, TimeCounter, the player,
+ * moving enemies and runs the maze game.
+ */
 public class Initialize {
     private JFrame MazeFrame;
     private Board board;
@@ -10,10 +14,14 @@ public class Initialize {
     private Enemy enemy1;
     private Enemy enemy2;
 
+    /**
+     * Initialize and run the maze game. Create enemies at positions (18, 9) and (13, 7),
+     * update the GUI every tick (500ms) and display a win screen or loss screen upon
+     * completion of the game.
+     */
     public Initialize(){
-
-        MazeFrame = new JFrame("MazeGame");
         // create board (GUI)
+        MazeFrame = new JFrame("MazeGame");
         board = Board.getInstance();
         scoreBoard = ScoreBoard.getInstance();
         MazeFrame.add(board);
@@ -41,8 +49,7 @@ public class Initialize {
             // update board to display the starting position of the player
             SwingUtilities.updateComponentTreeUI(MazeFrame);
 
-            //int turn = 0;
-            // checks continue_game value from  board
+            // checks continue_game value from board
             while(board.getContinue_game() == 1) {
                 //pause condition
                 player1.move();
@@ -63,8 +70,7 @@ public class Initialize {
             }
             SwingUtilities.updateComponentTreeUI(MazeFrame);
 
-            // If continue_game is 0 ouput WinScreen or LoseScreen
-            // haven't set condition for scores yet
+            // If continue_game is 0 output WinScreen or LoseScreen
             if(board.getContinue_game() == 0) {
                 if(player1.isAtEnd == true) {
                     MazeFrame.setVisible(false);
