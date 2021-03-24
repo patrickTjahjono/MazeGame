@@ -5,6 +5,7 @@ public class Initialize {
     private JFrame MazeFrame;
     private Board board;
     private BoardState boardState;
+    private ScoreBoard scoreBoard;
     private Player player1;
     private Enemy enemy1;
     private Enemy enemy2;
@@ -14,6 +15,7 @@ public class Initialize {
         MazeFrame = new JFrame("MazeGame");
         // create board (GUI)
         board = Board.getInstance();
+        scoreBoard = ScoreBoard.getInstance();
         MazeFrame.add(board);
         MazeFrame.pack();
         MazeFrame.setLocationRelativeTo(null);
