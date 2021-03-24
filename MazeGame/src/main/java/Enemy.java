@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Enemy extends MovingCharacter{
+
+    /**
+     * Create Enemy object on the board at (x,y) position
+     *
+     * @param x       is contained within the interval [0, 19] as dictated by Board and BoardState
+     * @param y       is contained within the interval [0, 9] as dictated by Board and BoardState
+     */
     public Enemy(int x, int y) throws IOException
     {
         super(x, y);
@@ -18,6 +25,15 @@ public class Enemy extends MovingCharacter{
         board.getCells()[x][y].add(label);
     }
 
+    /**
+     * Checking for the best move from every move that the Enemy can take, checking is done by calculating
+     * the squared distance from enemy next possible move with player's position using BoardState method
+     * calculateSquaredDistanceWithEnemyCheck i.e. will it get enemy to the closest position to player
+     * if it goes up if not then check the others like left, right, down. Once everything
+     * has been compared, function will return the best move
+     *
+     * @return String 'w' for west or left, 'e' for east or right, 'n' for north or up, 's' for down or south
+     */
     private String getBestMove() {
         BoardState boardState = BoardState.getInstance();
         try {
@@ -52,6 +68,11 @@ public class Enemy extends MovingCharacter{
         return "None";
     }
 
+    /**
+     * Calculating the current squared distance from Enemy to Player using  BoardState method calculateSquaredDistanceWithEnemyCheck
+     *
+     * @return int calculated squared distance
+     */
     public int getCurrentSquaredDistanceToPlayer() {
         BoardState boardState = BoardState.getInstance();
         Player player = Player.getInstance();
@@ -65,6 +86,15 @@ public class Enemy extends MovingCharacter{
         return currentSquaredDistanceToPlayer;
     }
 
+    /**
+     * Moving the Enemy object so it will get close to Player object if the Player is not yet caught.
+     * The movement will also check if the path or next position taken will contain any other object like
+     * reward or punishment, if yes then it will show on the board that the Enemy object is occupying that position
+     * and once it moves the previous object occupying (reward or punishment) it will reappear on the board.
+     * Once best Move is calculated by getBestMove() the movement will be directed by the inherited method
+     * from MovingCharacter.
+     *
+     */
     public void move() {
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
@@ -104,6 +134,11 @@ public class Enemy extends MovingCharacter{
         }
     }
 
+    /**
+     * When the Enemy object touch reward or occupy the same position, it will remove the reward label so
+     * that only Enemy label will be shown on the board
+     *
+     */
     public void touch_reward_R(){
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
@@ -117,6 +152,11 @@ public class Enemy extends MovingCharacter{
         }
     }
 
+    /**
+     * When the Enemy object leave position that is previously occupied by regular reward, it will re-add
+     * the reward label so that it will be shown on the board
+     *
+     */
     public void leave_reward_R(){
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
@@ -130,6 +170,11 @@ public class Enemy extends MovingCharacter{
         }
     }
 
+    /**
+     * When the Enemy object touch bonus reward or occupy the same position, it will remove the bonus reward label so
+     * that only Enemy label will be shown on the board
+     *
+     */
     public void touch_bonus_reward(){
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
@@ -137,6 +182,11 @@ public class Enemy extends MovingCharacter{
         board.getCells()[BR.getX()][BR.getY()].remove(BR.getLabel());
     }
 
+    /**
+     * When the Enemy object leave position that is previously occupied by bonus reward, it will re-add
+     * the bonus reward label so that it will be shown on the board
+     *
+     */
     public void leave_bonus_reward(){
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
@@ -144,6 +194,11 @@ public class Enemy extends MovingCharacter{
         board.getCells()[BR.getX()][BR.getY()].add(BR.getLabel());
     }
 
+    /**
+     * When the Enemy object touch punishment or occupy the same position, it will remove the punishment label so
+     * that only Enemy label will be shown on the board
+     *
+     */
     public void touch_punishment(){
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
@@ -157,6 +212,11 @@ public class Enemy extends MovingCharacter{
         }
     }
 
+    /**
+     * When the Enemy object leave position that is previously occupied by punishment, it will re-add
+     * the punishment label so that it will be shown on the board
+     *
+     */
     public void leave_punishment(){
         BoardState boardState = BoardState.getInstance();
         Board board = Board.getInstance();
