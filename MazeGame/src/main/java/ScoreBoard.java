@@ -1,15 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * 
+ * ScoreBoard class creates the GUI of the ScoreBoard component to display the score of player. 
+ * The player's score either increments/decrements at each update of the ScoreBoard.
+ */
 public class ScoreBoard {
     private static ScoreBoard instance;
     private int score;
     JLabel label;
 
+    /**
+     * Creates a new ScoreBoard used as the GUI display for Player's Score. Initial score is set to 0.
+     */
     private ScoreBoard() {
         score = 0;
         // assigning label 'S' 'C' 'O' 'R' 'E' ':' '0' for each panel
-        JLabel temp;
         label = new JLabel("S");
         label.setFont(new Font("Arial",1,20));
         label.setForeground(Color.WHITE);
@@ -40,6 +47,9 @@ public class ScoreBoard {
         Board.getInstance().getCells()[6][0].add(label);
     }
 
+    /**
+     * @return the existing instance of ScoreBoard or a new instance of Board if one does not exist.
+     */
     public static ScoreBoard getInstance() {
         if (instance == null) {
             instance = new ScoreBoard();
@@ -47,6 +57,12 @@ public class ScoreBoard {
         return instance;
     }
 
+    /**
+     * 
+     * Updates the global score value and scoreboard GUI.
+     * 
+     * @param point the point that player gets from either punishment or rewards
+     */
     public void updateScore(int point) {
         this.score += point;
         //remove the 0 panel and then add the updated one
@@ -57,6 +73,10 @@ public class ScoreBoard {
         Board.getInstance().getCells()[6][0].add(label);
     }
 
+    /**
+     * 
+     * @return the score stored on scoreboard.
+     */
     public int getScore() {
         return score;
     }
