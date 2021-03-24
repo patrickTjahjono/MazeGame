@@ -2,17 +2,36 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * 
+ * The abstract MovingCharacter controls the movement of the player by altering it's cell position on board. 
+ * Player is restricted from moving onto cells that is solid, and no object is created from MovingCharacter.
+ */
 abstract class MovingCharacter extends Position{
     protected JLabel label;
 
+    /**
+     * 
+     * @param x the x coordinate of the player in the range of [0, 19] inherits from Position.
+     * @param y the y coordinate of the player in the range of [0, 9] inherits from Position.
+     * @throws IOException if (x, y) coordinates not within range
+     */
     protected MovingCharacter(int x, int y) throws IOException {
         super(x, y);
     }
 
+    /**
+     * 
+     * @return JLablel of player 
+     */
     public JLabel getLabel() {
         return label;
     }
 
+    /**
+     * The method moveWest gets the instance of Board and BoardState and 
+     * moves the position of the player to its left by 1. 
+     */
     protected void moveWest() {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
@@ -28,6 +47,10 @@ abstract class MovingCharacter extends Position{
         }
     }
 
+    /**
+     * The method moveEast gets the instance of Board and BoardState and 
+     * moves the position of the player to its right by 1. 
+     */
     protected void moveEast() {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
@@ -42,6 +65,10 @@ abstract class MovingCharacter extends Position{
         }
     }
 
+    /**
+     * The method moveNorth gets the instance of Board and BoardState and 
+     * moves the position of the player down by 1. 
+     */
     protected void moveNorth() {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
@@ -56,6 +83,10 @@ abstract class MovingCharacter extends Position{
         }
     }
 
+    /**
+     * The method moveWest gets the instance of Board and BoardState and 
+     * moves the position of the player up by 1. 
+     */
     protected void moveSouth() {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
