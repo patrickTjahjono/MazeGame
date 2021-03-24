@@ -14,6 +14,8 @@ public class Rewards extends Position{
 
     /**
      * 
+     * Creates a new Reward on Board at (x, y) position. 
+     * 
      * @param x the x coordinate that the reward object to be placed on, range from [0, 19].
      * @param y the y coordinate that the reward object to be placed on, range from [0, 20].
      * @throws IOException if (x, y) coordinate is out of range.
@@ -38,7 +40,7 @@ public class Rewards extends Position{
     /**
      * Gets the intance of BoardState and checks if regular reward is collected by the player.
      * If reward is collected, the method gets the instance of the ScoreBoard and Board. 
-     * Player's score gets updated, collected reward's JLabel gets removed from cell.
+     * Player's score gets updated (+5), collected reward's JLabel gets removed from cell.
      */
     public void collectedRR() {
         BoardState boardState = BoardState.getInstance();
