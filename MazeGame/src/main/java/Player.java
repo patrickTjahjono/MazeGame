@@ -9,7 +9,7 @@ import javax.swing.*;
 
 /**
  *
- * Player class create an object on the board that able to move by user input using arrow keys.
+ * Player class create an GUI object on the board that able to move by user input using arrow keys.
  * Player class will get need to collect all rewards and reach the end point without getting caught by
  * Enemy or having the score below zero.
  */

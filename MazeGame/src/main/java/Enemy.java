@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 /**
  *
- * Enemy class create an object on the board that will hunt down the player by calculating the squared
+ * Enemy class create an GUI object on the board that will hunt down the player by calculating the squared
  * distance from the player. It will also override a cell or position of reward or punishment if it occupy
  * the same position
  */
