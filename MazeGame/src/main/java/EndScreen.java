@@ -1,9 +1,16 @@
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.*;
 
+/**
+ * 
+ * The EndScreen is used as a GUI for displaying the Winning Screen.  
+ */
 public class EndScreen extends JPanel{
   
+    /**
+     * Paints Graphics object to the panel with the specified properties of color, size, font, and string.
+     * Final score and used time of player is also painted included in the Graphics object.
+     */
     public void paintComponent(Graphics g) {
         // if player wins
         super.paintComponent(g);
@@ -16,9 +23,6 @@ public class EndScreen extends JPanel{
         g2d.setColor(Color.blue.darker());
         g2d.setFont(new Font("Arial", Font.BOLD, 36));
         g2d.drawString("Score: " + String.valueOf(ScoreBoard.getInstance().getScore()),220, 190);
-        g2d.drawString("Time: " + String.valueOf(TimeCounter.getInstance().getTime()),220, 220);
-        //create jButton to restart game
-        //System.exit(0);
-        
+        g2d.drawString("Time: " + String.valueOf(TimeCounter.getInstance().getTime()),220, 220);       
     }
 }
