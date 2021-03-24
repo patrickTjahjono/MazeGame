@@ -48,7 +48,7 @@ public class ScoreBoard {
     }
 
     /**
-     * @return the existing instance of ScoreBoard or a new instance of Board if one does not exist.
+     * @return the existing instance of ScoreBoard or a new instance of ScoreBoard if one does not exist.
      */
     public static ScoreBoard getInstance() {
         if (instance == null) {

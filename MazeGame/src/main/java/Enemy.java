@@ -5,7 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ *
+ * Enemy class create an object on the board that will hunt down the player by calculating the squared
+ * distance from the player. It will also override a cell or position of reward or punishment if it occupy
+ * the same position
+ */
 public class Enemy extends MovingCharacter{
 
     /**
@@ -87,8 +92,8 @@ public class Enemy extends MovingCharacter{
     }
 
     /**
-     * Moving the Enemy object so it will get close to Player object if the Player is not yet caught.
-     * The movement will also check if the path or next position taken will contain any other object like
+     * Moving the Enemy object so it will get close to Player object if the Player is not yet caught, if yes then the
+     * game ends. The movement will also check if the path or next position taken will contain any other object like
      * reward or punishment, if yes then it will show on the board that the Enemy object is occupying that position
      * and once it moves the previous object occupying (reward or punishment) it will reappear on the board.
      * Once best Move is calculated by getBestMove() the movement will be directed by the inherited method
