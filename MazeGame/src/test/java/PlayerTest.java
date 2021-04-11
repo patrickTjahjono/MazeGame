@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PlayerTest {
@@ -241,22 +242,28 @@ public class PlayerTest {
         }
     }
 
-    /*
     @Test
-    void testJLabel() {
+    @Order(9)
+    void touchEnemy() {
         Board board = Board.getInstance();
+        BoardState boardState = BoardState.getInstance();
+        ScoreBoard scoreBoard = ScoreBoard.getInstance();
         Player player = Player.getInstance();
-        JLabel expectedLabel;
-        try {
-            // should successfully get the Player's JLabel from the JPanel at [0][1]
-            expectedLabel = (JLabel)board.getCells()[0][1].getComponent(0);
+        board.setContinue_game(1);
 
-            // should fail and set expectedLabel as null
-            //expectedLabel = (JLabel)board.getCells()[1][1].getComponent(0);
-        } catch (Exception e) {
-            expectedLabel = null;
+        // reset position
+        player.setX(0);
+        player.setY(1);
+
+        try {
+            Enemy enemy = new Enemy(1, 1);
+            enemy.move();
+
+            assertEquals(0, board.getContinue_game());
+            assertNotEquals(enemy.getX(), player.getX());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to read Punishment image.");
         }
-        assertEquals(expectedLabel, player.getLabel());
     }
-    */
 }
