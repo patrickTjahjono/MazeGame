@@ -260,7 +260,6 @@ public class PlayerTest {
             enemy.move();
 
             assertEquals(0, board.getContinue_game());
-            assertNotEquals(enemy.getX(), player.getX());
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to read Punishment image.");

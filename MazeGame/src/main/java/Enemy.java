@@ -106,7 +106,7 @@ public class Enemy extends MovingCharacter{
         Player player = Player.getInstance();
         String bestMove = getBestMove();
 
-        if (this.getCurrentSquaredDistanceToPlayer() == 1) {
+        if (this.getCurrentSquaredDistanceToPlayer() <= 1) {
             Board.getInstance().setContinue_game(0);
         }
 
