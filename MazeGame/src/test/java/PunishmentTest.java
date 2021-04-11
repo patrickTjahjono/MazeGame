@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,11 +50,16 @@ public class PunishmentTest {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
         JLabel actualLabel = null;
+
+        ArrayList<Punishment> punishments = boardState.getPunishments();
+
         try {
             punishment = new Punishment(1,1);
+            boardState.boardStateCells[1][1].setContainsPunishment(1);
+            punishments.add(punishment);
 
             player.moveEast();
-            player.touch_punishment();
+            player.move();
 
             assertEquals(punishment.getX(),player.getX());
             assertEquals(punishment.getY(),player.getY());
@@ -69,7 +75,7 @@ public class PunishmentTest {
         }
 
         assertEquals(0,boardState.boardStateCells[player.getX()][player.getY()].getContainsPunishment());
-        //assertEquals(player.getLabel(),actualLabel);
+        assertEquals(player.getLabel(),actualLabel);
 
     }
 }
