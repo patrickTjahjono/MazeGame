@@ -31,6 +31,14 @@ public class PunishmentTest {
         scoreBoard.updateScore(10);//set score to 10
         punishment.collectedPunishment();//collected punishment score-5
 
+        JLabel actualLabel;
+        try{
+            actualLabel = (JLabel) board.getCells()[punishment.getX()][punishment.getY()].getComponent(0);
+        }
+        catch (Exception e) {
+            actualLabel = null;
+        }
+        assertNull(actualLabel);
         assertEquals(5,scoreBoard.getScore());// 10-5 = 5
     }
 }
