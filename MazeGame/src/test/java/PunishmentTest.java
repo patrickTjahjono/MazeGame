@@ -41,4 +41,35 @@ public class PunishmentTest {
         assertNull(actualLabel);
         assertEquals(5,scoreBoard.getScore());// 10-5 = 5
     }
+
+    @Test
+    public void TouchPunishmentTest(){
+        Punishment punishment;
+        Player player = Player.getInstance();
+        Board board = Board.getInstance();
+        BoardState boardState = BoardState.getInstance();
+        JLabel actualLabel = null;
+        try {
+            punishment = new Punishment(1,1);
+
+            player.moveEast();
+            player.touch_punishment();
+
+            assertEquals(punishment.getX(),player.getX());
+            assertEquals(punishment.getY(),player.getY());
+            try {
+                actualLabel = (JLabel) board.getCells()[player.getX()][player.getY()].getComponent(0);
+            }
+            catch (Exception e) {
+                actualLabel = null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Punishment read image fail");
+        }
+
+        assertEquals(0,boardState.boardStateCells[player.getX()][player.getY()].getContainsPunishment());
+        //assertEquals(player.getLabel(),actualLabel);
+
+    }
 }
