@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PlayerTest {
@@ -19,6 +18,10 @@ public class PlayerTest {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
         Player player = Player.getInstance();
+
+        // reset position
+        player.setX(0);
+        player.setY(1);
 
         // move to the solid cell above the starting cell
         player.moveNorth();
@@ -32,6 +35,10 @@ public class PlayerTest {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
         Player player = Player.getInstance();
+
+        // reset position
+        player.setX(0);
+        player.setY(1);
 
         // move to the empty cell to the right of the starting cell
         player.moveEast();
