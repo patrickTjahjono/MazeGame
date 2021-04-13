@@ -42,7 +42,7 @@ public class Initialize {
                 }
             });
             player1 = Player.getInstance();
-            enemy1= new Enemy(18, 9);
+            enemy1= new Enemy(14, 7);
             enemy2 = new Enemy(13, 7);
             MazeFrame.addKeyListener(player1);
 
