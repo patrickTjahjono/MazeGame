@@ -140,7 +140,7 @@ public class EnemyTest {
             reward = rewards.get(0);
             Rx = reward.getX();
             Ry = reward.getY();
-            assertTrue(Rx<=18 && Rx >=1 && Ry >= 1 && Ry <= 8); // make sure punishment is on board
+            assertTrue(Rx<=18 && Rx >=1 && Ry >= 1 && Ry <= 8); // make sure reward is on board
 
             enemy = new Enemy(Rx, Ry);
             board.getCells()[Rx][Ry].remove(reward.getLabel());
@@ -160,8 +160,8 @@ public class EnemyTest {
             }
 
             try {
-                actualLabel0 = (JLabel) board.getCells()[reward.getX()][reward.getY()].getComponent(0);
-                actualLabel1 = (JLabel) board.getCells()[reward.getX()][reward.getY()].getComponent(1);
+                actualLabel0 = (JLabel) board.getCells()[Rx][Ry].getComponent(0);
+                actualLabel1 = (JLabel) board.getCells()[Rx][Ry].getComponent(1);
             } catch (Exception e) {
                 actualLabel1 = null;
             }
@@ -287,8 +287,8 @@ public class EnemyTest {
             }
             assertTrue(enemy.getX() == punishment.getX() || enemy.getY() == punishment.getY());
             assertFalse(enemy.getX() == punishment.getX() && enemy.getY() == punishment.getY());
-            //assertEquals(null, actualLabel1);
-            //assertEquals(punishment.getLabel(), actualLabel0);
+            assertEquals(null, actualLabel1);
+            assertEquals(punishment.getLabel(), actualLabel0);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Enemy read image fail");
@@ -347,20 +347,20 @@ public class EnemyTest {
         JLabel actualLabel0 = null,actualLabel1 = null;
         int Bx, By;
         try {
-            bonusReward = new BonusReward(1, 8);
-            Bx = 1;
-            By = 8;
+            bonusReward = new BonusReward(18, 1);
+            Bx = 18;
+            By = 1;
             boardState.setBonusReward(bonusReward);
 
             enemy = new Enemy(Bx, By);
             board.getCells()[Bx][By].remove(bonusReward.getLabel());
             enemy.leave_bonus_reward();
-            if (boardState.boardStateCells[Bx + 1][By].getContainsRewardOrPunishment() == 0 &&
-                    boardState.boardStateCells[Bx + 1][By].getIsSolid() == 0) {
-                enemy.moveEast();
-            } else if (boardState.boardStateCells[Bx][By - 1].getContainsRewardOrPunishment() == 0 &&
-                    boardState.boardStateCells[Bx][By - 1].getIsSolid() == 0) {
-                enemy.moveNorth();
+            if (boardState.boardStateCells[Bx - 1][By].getContainsRewardOrPunishment() == 0 &&
+                    boardState.boardStateCells[Bx - 1][By].getIsSolid() == 0) {
+                enemy.moveWest();
+            } else if (boardState.boardStateCells[Bx][By + 1].getContainsRewardOrPunishment() == 0 &&
+                    boardState.boardStateCells[Bx][By + 1].getIsSolid() == 0) {
+                enemy.moveSouth();
             }
 
             try {
