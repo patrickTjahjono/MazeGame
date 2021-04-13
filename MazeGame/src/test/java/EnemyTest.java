@@ -181,33 +181,47 @@ public class EnemyTest {
         Board board = Board.getInstance();
         Punishment punishment;
         JLabel actualLabel = null;
-        int Ex, Ey;
-        int Px, Py;
+        int Ex = 20, Ey = 20;//placeholder value
+        int Px = 20, Py = 20;//placeholder value
         BoardState boardState = BoardState.getInstance();
         ArrayList<Punishment> punishments = boardState.getPunishments();
-        for (int i = 0; i < punishments.size(); i++) {
+        int i = 0;
+        for (; i < punishments.size(); i++) {
             Px = punishments.get(i).getX();
             Py = punishments.get(i).getY();
             if (boardState.boardStateCells[Px - 1][Py].getContainsRewardOrPunishment() == 0 &&
                     boardState.boardStateCells[Px - 1][Py].getIsSolid() == 0) {
                 Ex = Px - 1;
                 Ey = Py;
+                break;
             } else if (boardState.boardStateCells[Px + 1][Py].getContainsRewardOrPunishment() == 0 &&
                     boardState.boardStateCells[Px + 1][Py].getIsSolid() == 0) {
                 Ex = Px + 1;
                 Ey = Py;
+                break;
             } else if (boardState.boardStateCells[Px][Py + 1].getContainsRewardOrPunishment() == 0 &&
                     boardState.boardStateCells[Px][Py + 1].getIsSolid() == 0) {
                 Ex = Px;
                 Ey = Py + 1;
+                break;
             } else if (boardState.boardStateCells[Px][Py - 1].getContainsRewardOrPunishment() == 0 &&
                     boardState.boardStateCells[Px][Py - 1].getIsSolid() == 0) {
                 Ex = Px;
                 Ey = Py - 1;
-            } else
-                continue;
-            punishment = punishments.get(i);
+                break;
+            }
+
+
             try {
+                if (i >= punishments.size()) {
+                    Px = 1;
+                    Py = 8;
+                    Ex = 2;
+                    Ey = 8;
+                    punishment = new Punishment(1,8);
+                } else
+                    punishment = punishments.get(i);
+
                 enemy = new Enemy(Ex, Ey);
                 if (Ex == Px - 1 && Ey == Py)
                     enemy.moveEast();
@@ -333,9 +347,9 @@ public class EnemyTest {
         JLabel actualLabel0 = null,actualLabel1 = null;
         int Bx, By;
         try {
-            bonusReward = new BonusReward(1, 1);
+            bonusReward = new BonusReward(1, 8);
             Bx = 1;
-            By = 1;
+            By = 8;
             boardState.setBonusReward(bonusReward);
 
             enemy = new Enemy(Bx, By);
@@ -344,9 +358,9 @@ public class EnemyTest {
             if (boardState.boardStateCells[Bx + 1][By].getContainsRewardOrPunishment() == 0 &&
                     boardState.boardStateCells[Bx + 1][By].getIsSolid() == 0) {
                 enemy.moveEast();
-            } else if (boardState.boardStateCells[Bx][By + 1].getContainsRewardOrPunishment() == 0 &&
-                    boardState.boardStateCells[Bx][By + 1].getIsSolid() == 0) {
-                enemy.moveSouth();
+            } else if (boardState.boardStateCells[Bx][By - 1].getContainsRewardOrPunishment() == 0 &&
+                    boardState.boardStateCells[Bx][By - 1].getIsSolid() == 0) {
+                enemy.moveNorth();
             }
 
             try {
