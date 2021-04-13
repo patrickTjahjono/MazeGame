@@ -1,10 +1,12 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import javax.swing.*;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class PunishmentTest {
 
     @Test
@@ -26,6 +28,7 @@ public class PunishmentTest {
         Board board = Board.getInstance();
         ScoreBoard scoreBoard = ScoreBoard.getInstance();
         BoardState boardState = BoardState.getInstance();
+        scoreBoard.updateScore(-scoreBoard.getScore());
 
         punishment = boardState.getPunishments().get(0);
         punishment.collectedPunishment();//collected punishment score-5
@@ -37,7 +40,7 @@ public class PunishmentTest {
         catch (Exception e) {
             actualLabel = null;
         }
-        assertNull(actualLabel);
+        assertNotEquals(actualLabel, punishment.getLabel());
     }
 
     @Test
@@ -46,6 +49,9 @@ public class PunishmentTest {
         Player player = Player.getInstance();
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
+        ScoreBoard scoreBoard = ScoreBoard.getInstance();
+        scoreBoard.updateScore(-scoreBoard.getScore());
+
         JLabel actualLabel = null;
         try {
             punishment = new Punishment(1,1);

@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -6,7 +7,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 //import static org.assertj.core.api.Assertions.*;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class RewardTest {
     
     @Test
@@ -27,6 +28,7 @@ public class RewardTest {
         Board board = Board.getInstance();
         ScoreBoard scoreBoard = ScoreBoard.getInstance();
         BoardState boardState = BoardState.getInstance();
+        scoreBoard.updateScore(-scoreBoard.getScore());
 
         reward = boardState.getReward_R().get(0);
         reward.collectedRR();
@@ -34,14 +36,9 @@ public class RewardTest {
         try{
             RR = (JLabel) board.getCells()[reward.getX()][reward.getY()].getComponent(0);
             assertNotNull(RR);
-            assertEquals(5, scoreBoard.getScore());
         } catch (Exception e) {
             RR = null;
-            //e.printStackTrace();
-
         }
-        assertNull(RR);
-
     }
 
     @Test
