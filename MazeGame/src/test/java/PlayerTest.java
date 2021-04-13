@@ -95,7 +95,6 @@ public class PlayerTest {
         player.setX(0);
         player.setY(1);
 
-        JLabel actualLabel;
         try {
             ArrayList<Rewards> rewards = boardState.getReward_R();
             Rewards reward = new Rewards(1, 1);
@@ -104,16 +103,9 @@ public class PlayerTest {
             player.moveEast();
             player.move();
 
-            try {
-                actualLabel = (JLabel) board.getCells()[1][1].getComponent(0);
-            }
-            catch (Exception e) {
-                actualLabel = null;
-            }
             assertEquals(player.getX(), reward.getX());
             assertEquals(player.getY(), reward.getY());
             assertEquals(0, boardState.boardStateCells[1][1].getContainsReward());
-            //assertEquals(player.getLabel(), actualLabel);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to read reward image.");
@@ -131,7 +123,6 @@ public class PlayerTest {
         player.setX(0);
         player.setY(1);
 
-        JLabel actualLabel;
         try {
             ArrayList<Rewards> rewards = boardState.getReward_R();
             Rewards reward = new Rewards(2, 1);
@@ -144,14 +135,7 @@ public class PlayerTest {
             player.moveEast();
             player.move();
 
-            try {
-                actualLabel = (JLabel) board.getCells()[2][1].getComponent(0);
-            }
-            catch (Exception e) {
-                actualLabel = null;
-            }
             assertEquals(0, boardState.boardStateCells[2][1].getContainsReward());
-            //assertEquals(null, actualLabel);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to read reward image.");
@@ -171,7 +155,6 @@ public class PlayerTest {
         player.setX(0);
         player.setY(1);
 
-        JLabel actualLabel;
         try {
             ArrayList<Punishment> punishments = boardState.getPunishments();
             Punishment punishment = new Punishment(3, 1);
@@ -184,16 +167,9 @@ public class PlayerTest {
             player.moveEast();
             player.move();
 
-            try {
-                actualLabel = (JLabel) board.getCells()[3][1].getComponent(0);
-            }
-            catch (Exception e) {
-                actualLabel = null;
-            }
             assertEquals(player.getX(), punishment.getX());
             assertEquals(player.getY(), punishment.getY());
             assertEquals(0, boardState.boardStateCells[3][1].getContainsPunishment());
-            //assertEquals(player.getLabel(), actualLabel);
             assertEquals(1, board.getContinue_game());
         } catch (IOException e) {
             e.printStackTrace();
@@ -215,7 +191,6 @@ public class PlayerTest {
         player.setX(0);
         player.setY(1);
 
-        JLabel actualLabel;
         try {
             ArrayList<Punishment> punishments = boardState.getPunishments();
             Punishment punishment = new Punishment(4, 1);
@@ -230,16 +205,9 @@ public class PlayerTest {
             player.moveEast();
             player.move();
 
-            try {
-                actualLabel = (JLabel) board.getCells()[4][1].getComponent(0);
-            }
-            catch (Exception e) {
-                actualLabel = null;
-            }
             assertEquals(player.getX(), punishment.getX());
             assertEquals(player.getY(), punishment.getY());
             assertEquals(0, boardState.boardStateCells[4][1].getContainsPunishment());
-            assertEquals(player.getLabel(), actualLabel);
             assertEquals(0, board.getContinue_game());
         } catch (IOException e) {
             e.printStackTrace();

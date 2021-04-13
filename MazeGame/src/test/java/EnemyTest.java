@@ -74,7 +74,6 @@ public class EnemyTest {
         Enemy enemy;
         Board board = Board.getInstance();
         Rewards reward;
-        JLabel actualLabel = null;
         int Ex, Ey;
         int Rx, Ry;
         BoardState boardState = BoardState.getInstance();
@@ -112,14 +111,9 @@ public class EnemyTest {
                 else if (Ex == Rx && Ey == Ry - 1)
                     enemy.moveSouth();
                 enemy.touch_reward_R();
-                try {
-                    actualLabel = (JLabel) board.getCells()[reward.getX()][reward.getY()].getComponent(0);
-                } catch (Exception e) {
-                    actualLabel = null;
-                }
+
                 assertEquals(enemy.getX(), reward.getX());
                 assertEquals(enemy.getY(), reward.getY());
-                assertEquals(enemy.getLabel(), actualLabel);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Enemy read image fail");
@@ -132,7 +126,6 @@ public class EnemyTest {
         Enemy enemy;
         Board board = Board.getInstance();
         Rewards reward;
-        JLabel actualLabel0 = null,actualLabel1 = null;
         int Rx, Ry;
         BoardState boardState = BoardState.getInstance();
         ArrayList<Rewards> rewards = boardState.getReward_R();
@@ -159,16 +152,9 @@ public class EnemyTest {
                 enemy.moveNorth();
             }
 
-            try {
-                actualLabel0 = (JLabel) board.getCells()[Rx][Ry].getComponent(0);
-                actualLabel1 = (JLabel) board.getCells()[Rx][Ry].getComponent(1);
-            } catch (Exception e) {
-                actualLabel1 = null;
-            }
+
             assertTrue(enemy.getX() == reward.getX() || enemy.getY() == reward.getY());
             assertFalse(enemy.getX() == reward.getX() && enemy.getY() == reward.getY());
-            //assertEquals(null, actualLabel1);
-            //assertEquals(reward.getLabel(), actualLabel0);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Enemy read image fail");
@@ -180,7 +166,6 @@ public class EnemyTest {
         Enemy enemy;
         Board board = Board.getInstance();
         Punishment punishment;
-        JLabel actualLabel = null;
         int Ex = 20, Ey = 20;//placeholder value
         int Px = 20, Py = 20;//placeholder value
         BoardState boardState = BoardState.getInstance();
@@ -232,14 +217,9 @@ public class EnemyTest {
                 else if (Ex == Px && Ey == Py - 1)
                     enemy.moveSouth();
                 enemy.touch_punishment();
-                try {
-                    actualLabel = (JLabel) board.getCells()[punishment.getX()][punishment.getY()].getComponent(0);
-                } catch (Exception e) {
-                    actualLabel = null;
-                }
+
                 assertEquals(enemy.getX(), punishment.getX());
                 assertEquals(enemy.getY(), punishment.getY());
-                assertEquals(enemy.getLabel(), actualLabel);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Enemy read image fail");
@@ -252,7 +232,6 @@ public class EnemyTest {
         Enemy enemy;
         Board board = Board.getInstance();
         Punishment punishment;
-        JLabel actualLabel0 = null,actualLabel1 = null;
         int Px, Py;
         BoardState boardState = BoardState.getInstance();
         ArrayList<Punishment> punishments = boardState.getPunishments();
@@ -279,16 +258,8 @@ public class EnemyTest {
                 enemy.moveNorth();
             }
 
-            try {
-                actualLabel0 = (JLabel) board.getCells()[punishment.getX()][punishment.getY()].getComponent(0);
-                actualLabel1 = (JLabel) board.getCells()[punishment.getX()][punishment.getY()].getComponent(1);
-            } catch (Exception e) {
-                actualLabel1 = null;
-            }
             assertTrue(enemy.getX() == punishment.getX() || enemy.getY() == punishment.getY());
             assertFalse(enemy.getX() == punishment.getX() && enemy.getY() == punishment.getY());
-            assertEquals(null, actualLabel1);
-            assertEquals(punishment.getLabel(), actualLabel0);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Enemy read image fail");
@@ -301,7 +272,6 @@ public class EnemyTest {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
         BonusReward bonusReward;
-        JLabel actualLabel = null;
         int Ex = 0, Ey = 0;
         int Bx, By;
         try {
@@ -324,14 +294,8 @@ public class EnemyTest {
             else if (Ex == Bx && Ey == By + 1)
                 enemy.moveNorth();
             enemy.touch_bonus_reward();
-            try {
-                actualLabel = (JLabel) board.getCells()[Bx][By].getComponent(0);
-            } catch (Exception e) {
-                actualLabel = null;
-            }
             assertEquals(enemy.getX(), Bx);
             assertEquals(enemy.getY(), By);
-            //assertEquals(enemy.getLabel(), actualLabel);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("BonusReward read image fail");
@@ -344,7 +308,6 @@ public class EnemyTest {
         Board board = Board.getInstance();
         BoardState boardState = BoardState.getInstance();
         BonusReward bonusReward;
-        JLabel actualLabel0 = null,actualLabel1 = null;
         int Bx, By;
         try {
             bonusReward = new BonusReward(18, 1);
@@ -363,16 +326,8 @@ public class EnemyTest {
                 enemy.moveSouth();
             }
 
-            try {
-                actualLabel0 = (JLabel) board.getCells()[bonusReward.getX()][bonusReward.getY()].getComponent(0);
-                actualLabel1 = (JLabel) board.getCells()[bonusReward.getX()][bonusReward.getY()].getComponent(1);
-            } catch (Exception e) {
-                actualLabel1 = null;
-            }
             assertTrue(enemy.getX() == bonusReward.getX() || enemy.getY() == bonusReward.getY());
             assertFalse(enemy.getX() == bonusReward.getX() && enemy.getY() == bonusReward.getY());
-            //assertEquals(null, actualLabel1);
-            assertEquals(bonusReward.getLabel(), actualLabel0);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Enemy read image fail");
