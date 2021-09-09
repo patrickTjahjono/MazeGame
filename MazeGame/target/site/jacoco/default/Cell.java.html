@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cell.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Cell.java</span></div><h1>Cell.java</h1><pre class="source lang-java linenums">/**
+ * Stores information and represents the possible states an (x, y) position on the game board may be in.
+ */
+public class Cell extends Position {
+    private int isSolid;
+    private int containsReward;
+    private int containsBonusReward;
+    private int containsPunishment;
+    private int containsEnemy;
+    private int containEndCell;
+
+    /**
+     * Creates a new Cell that stores information about a given (x, y) position
+     *
+     * @param x       is contained within the interval [0, 19] as dictated by Board and BoardState
+     * @param y       is contained within the interval [0, 9] as dictated by Board and BoardState
+     * @param isSolid indicates whether a Cell is not solid/traversable (0) or solid/non-traversable (1)
+     */
+    public Cell(int x, int y, int isSolid) {
+<span class="fc" id="L20">        super(x, y);</span>
+<span class="fc" id="L21">        this.isSolid = isSolid;</span>
+<span class="fc" id="L22">        this.containsReward = 0;</span>
+<span class="fc" id="L23">        this.containsBonusReward = 0;</span>
+<span class="fc" id="L24">        this.containsPunishment = 0;</span>
+<span class="fc" id="L25">        this.containEndCell = 0;</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * @return whether a Cell is traversable or not
+     */
+    public int getIsSolid() {
+<span class="fc" id="L32">        return isSolid;</span>
+    }
+
+    /**
+     * @param isSolid whether a Cell is solid (1) or not solid (0)
+     */
+    public void setIsSolid(int isSolid) {
+<span class="fc" id="L39">        this.isSolid = isSolid;</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * @return whether a Cell contains a regular reward (1) or does not contain a regular reward (0)
+     */
+    public int getContainsReward() {
+<span class="fc" id="L46">        return containsReward;</span>
+    }
+
+    /**
+     * @param containsReward whether a cell contains a regular reward (1) or does not contain a regular reward (0)
+     */
+    public void setContainsReward(int containsReward) {
+<span class="fc" id="L53">        this.containsReward = containsReward;</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * @return whether a Cell contains a bonus reward (1) or does not contain a bonus reward (0)
+     */
+    public int getContainsBonusReward() {
+<span class="fc" id="L60">        return containsBonusReward;</span>
+    }
+
+    /**
+     * @param containsBonusReward whether a Cell contains a bonus reward (1) or does not contain a bonus reward (0)
+     */
+    public void setContainsBonusReward(int containsBonusReward) {
+<span class="fc" id="L67">        this.containsBonusReward = containsBonusReward;</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * @return whether a Cell contains a punishment (1) or does not contain a punishment (0)
+     */
+    public int getContainsPunishment() {
+<span class="fc" id="L74">        return containsPunishment;</span>
+    }
+
+    /**
+     * @param containsPunishment whether a Cell contains a punishment (1) or does not contain a punishment (0)
+     */
+    public void setContainsPunishment(int containsPunishment) {
+<span class="fc" id="L81">        this.containsPunishment = containsPunishment;</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * @return whether a Cell contains a reward, bonus reward or punishment (1) or
+     * none of the aforementioned score modifiers (0)
+     */
+    public int getContainsRewardOrPunishment() {
+<span class="pc bpc" id="L89" title="1 of 6 branches missed.">        if (this.getContainsReward() == 1 || this.getContainsBonusReward() == 1 || this.getContainsPunishment() == 1) {</span>
+<span class="fc" id="L90">            return 1;</span>
+        } else {
+<span class="fc" id="L92">            return 0;</span>
+        }
+    }
+
+    /**
+     * @return whether a Cell contains an enemy (1) or does not contain an enemy (0)
+     */
+    public int getContainsEnemy() {
+<span class="fc" id="L100">        return containsEnemy;</span>
+    }
+
+    /**
+     * @param containsEnemy whether a Cell contains an enemy (1) or does not contain an enemy (0)
+     */
+    public void setContainsEnemy(int containsEnemy) {
+<span class="fc" id="L107">        this.containsEnemy = containsEnemy;</span>
+<span class="fc" id="L108">    }</span>
+
+    /**
+     * @param containEndCell whether a Cell is the End Cell (1) or not the End Cell (0)
+     */
+    public void setContainEndCell(int containEndCell) {
+<span class="fc" id="L114">        this.containEndCell = containEndCell;</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * @return whether a Cell is the End Cell (1) or not the End Cell (0)
+     */
+    public int getContainEndCell() {
+<span class="fc" id="L121">        return containEndCell;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

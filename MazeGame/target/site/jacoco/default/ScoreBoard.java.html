@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScoreBoard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">ScoreBoard.java</span></div><h1>ScoreBoard.java</h1><pre class="source lang-java linenums">import javax.swing.*;
+import java.awt.*;
+
+/**
+ * 
+ * ScoreBoard class creates the GUI of the ScoreBoard component to display the score of player. 
+ * The player's score either increments/decrements at each update of the ScoreBoard.
+ */
+public class ScoreBoard {
+    private static ScoreBoard instance;
+    private int score;
+    JLabel label;
+
+    /**
+     * Creates a new ScoreBoard used as the GUI display for Player's Score. Initial score is set to 0.
+     */
+<span class="fc" id="L17">    private ScoreBoard() {</span>
+<span class="fc" id="L18">        score = 0;</span>
+        // assigning label 'S' 'C' 'O' 'R' 'E' ':' '0' for each panel
+<span class="fc" id="L20">        label = new JLabel(&quot;S&quot;);</span>
+<span class="fc" id="L21">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L22">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L23">        Board.getInstance().getCells()[0][0].add(label);</span>
+<span class="fc" id="L24">        label = new JLabel(&quot;C&quot;);</span>
+<span class="fc" id="L25">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L26">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L27">        Board.getInstance().getCells()[1][0].add(label);</span>
+<span class="fc" id="L28">        label = new JLabel(&quot;O&quot;);</span>
+<span class="fc" id="L29">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L30">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L31">        Board.getInstance().getCells()[2][0].add(label);</span>
+<span class="fc" id="L32">        label = new JLabel(&quot;R&quot;);</span>
+<span class="fc" id="L33">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L34">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L35">        Board.getInstance().getCells()[3][0].add(label);</span>
+<span class="fc" id="L36">        label = new JLabel(&quot;E&quot;);</span>
+<span class="fc" id="L37">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L38">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L39">        Board.getInstance().getCells()[4][0].add(label);</span>
+<span class="fc" id="L40">        label = new JLabel(&quot;:&quot;);</span>
+<span class="fc" id="L41">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L42">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L43">        Board.getInstance().getCells()[5][0].add(label);;</span>
+<span class="fc" id="L44">        label = new JLabel(String.valueOf(score));</span>
+<span class="fc" id="L45">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L46">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L47">        Board.getInstance().getCells()[6][0].add(label);</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * @return the existing instance of ScoreBoard or a new instance of ScoreBoard if one does not exist.
+     */
+    public static ScoreBoard getInstance() {
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L55">            instance = new ScoreBoard();</span>
+        }
+<span class="fc" id="L57">        return instance;</span>
+    }
+
+    /**
+     * 
+     * Updates the global score value and scoreboard GUI.
+     * 
+     * @param point the point that player gets from either punishment or rewards
+     */
+    public void updateScore(int point) {
+<span class="fc" id="L67">        this.score += point;</span>
+        //remove the 0 panel and then add the updated one
+<span class="fc" id="L69">        Board.getInstance().getCells()[6][0].remove(label);</span>
+<span class="fc" id="L70">        label = new JLabel(String.valueOf(score));</span>
+<span class="fc" id="L71">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L72">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L73">        Board.getInstance().getCells()[6][0].add(label);</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * 
+     * @return the score stored on scoreboard.
+     */
+    public int getScore() {
+<span class="fc" id="L81">        return score;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

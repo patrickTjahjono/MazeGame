@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Enemy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Enemy.java</span></div><h1>Enemy.java</h1><pre class="source lang-java linenums">import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+/**
+ *
+ * Enemy class create an GUI object on the board that will hunt down the player by calculating the squared
+ * distance from the player. It will also override a cell or position of reward or punishment if it occupy
+ * the same position
+ */
+public class Enemy extends MovingCharacter{
+
+    /**
+     * Create Enemy object on the board at (x,y) position
+     *
+     * @param x       is contained within the interval [0, 19] as dictated by Board and BoardState
+     * @param y       is contained within the interval [0, 9] as dictated by Board and BoardState
+     */
+    public Enemy(int x, int y) throws IOException
+    {
+<span class="fc" id="L24">        super(x, y);</span>
+<span class="fc" id="L25">        Image image = ImageIO.read(new File(&quot;src/ghost.png&quot;));</span>
+<span class="fc" id="L26">        this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));</span>
+
+        // set enemy on Board at position (x, y)
+<span class="fc" id="L29">        Board board = Board.getInstance();</span>
+<span class="fc" id="L30">        board.getCells()[x][y].add(label);</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Checking for the best move from every move that the Enemy can take, checking is done by calculating
+     * the squared distance from enemy next possible move with player's position using BoardState method
+     * calculateSquaredDistanceWithEnemyCheck i.e. will it get enemy to the closest position to player
+     * if it goes up if not then check the others like left, right, down. Once everything
+     * has been compared, function will return the best move
+     *
+     * @return String 'w' for west or left, 'e' for east or right, 'n' for north or up, 's' for down or south
+     */
+    private String getBestMove() {
+<span class="fc" id="L43">        BoardState boardState = BoardState.getInstance();</span>
+        try {
+<span class="fc" id="L45">            Player player = Player.getInstance();</span>
+<span class="fc" id="L46">            String[] moves = {&quot;w&quot;, &quot;e&quot;, &quot;n&quot;, &quot;s&quot;};</span>
+<span class="fc" id="L47">            int[] squaredDistances = new int[4];</span>
+
+<span class="fc" id="L49">            int playerX = player.getX();</span>
+<span class="fc" id="L50">            int playerY = player.getY();</span>
+<span class="fc" id="L51">            int enemyX = this.getX();</span>
+<span class="fc" id="L52">            int enemyY = this.getY();</span>
+
+<span class="fc" id="L54">            int bestMoveDistance = Integer.MAX_VALUE;</span>
+<span class="fc" id="L55">            int bestMoveIndex = -1;</span>
+
+            // squared distances from each cell (adjacent of the enemy) to the player
+<span class="fc" id="L58">            squaredDistances[0] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX - 1, enemyY, playerX, playerY);</span>
+<span class="fc" id="L59">            squaredDistances[1] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX + 1, enemyY, playerX, playerY);</span>
+<span class="fc" id="L60">            squaredDistances[2] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX, enemyY - 1, playerX, playerY);</span>
+<span class="fc" id="L61">            squaredDistances[3] = boardState.calculateSquaredDistanceWithEnemyCheck(enemyX, enemyY + 1, playerX, playerY);</span>
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">                if (bestMoveDistance &gt; squaredDistances[i]) {</span>
+<span class="fc" id="L65">                    bestMoveDistance = squaredDistances[i];</span>
+<span class="fc" id="L66">                    bestMoveIndex = i;</span>
+                }
+            }
+<span class="fc" id="L69">            return moves[bestMoveIndex];</span>
+<span class="nc" id="L70">        } catch (Exception e) {</span>
+<span class="nc" id="L71">            e.printStackTrace();</span>
+        }
+<span class="nc" id="L73">        return &quot;None&quot;;</span>
+    }
+
+    /**
+     * Calculating the current squared distance from Enemy to Player using  BoardState method calculateSquaredDistanceWithEnemyCheck
+     *
+     * @return int calculated squared distance
+     */
+    public int getCurrentSquaredDistanceToPlayer() {
+<span class="fc" id="L82">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L83">        Player player = Player.getInstance();</span>
+<span class="fc" id="L84">        int playerX = player.getX();</span>
+<span class="fc" id="L85">        int playerY = player.getY();</span>
+<span class="fc" id="L86">        int enemyX = this.getX();</span>
+<span class="fc" id="L87">        int enemyY = this.getY();</span>
+
+<span class="fc" id="L89">        int currentSquaredDistanceToPlayer = boardState.calculateSquaredDistance(enemyX, enemyY, playerX, playerY);</span>
+
+<span class="fc" id="L91">        return currentSquaredDistanceToPlayer;</span>
+    }
+
+    /**
+     * Moving the Enemy object so it will get close to Player object if the Player is not yet caught, if yes then the
+     * game ends. The movement will also check if the path or next position taken will contain any other object like
+     * reward or punishment, if yes then it will show on the board that the Enemy object is occupying that position
+     * and once it moves the previous object occupying (reward or punishment) it will reappear on the board.
+     * Once best Move is calculated by getBestMove() the movement will be directed by the inherited method
+     * from MovingCharacter.
+     *
+     */
+    public void move() {
+<span class="fc" id="L104">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L105">        Board board = Board.getInstance();</span>
+<span class="fc" id="L106">        Player player = Player.getInstance();</span>
+<span class="fc" id="L107">        String bestMove = getBestMove();</span>
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (this.getCurrentSquaredDistanceToPlayer() &lt;= 1) {</span>
+<span class="fc" id="L110">            Board.getInstance().setContinue_game(0);</span>
+        }
+
+<span class="fc" id="L113">        boardState.boardStateCells[this.getX()][this.getY()].setContainsEnemy(0);</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {</span>
+<span class="nc" id="L115">            leave_reward_R();</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {</span>
+<span class="nc" id="L117">            leave_punishment();</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsBonusReward() == 1) {</span>
+<span class="nc" id="L119">            leave_bonus_reward();</span>
+        }
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (bestMove.equals(&quot;w&quot;)) {</span>
+<span class="fc" id="L123">            this.moveWest();</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        } else if (bestMove.equals(&quot;e&quot;)) {</span>
+<span class="nc" id="L125">            this.moveEast();</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        } else if (bestMove.equals(&quot;n&quot;)) {</span>
+<span class="fc" id="L127">            this.moveNorth();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        } else if (bestMove.equals(&quot;s&quot;)) {</span>
+<span class="nc" id="L129">            this.moveSouth();</span>
+        }
+
+<span class="fc" id="L132">        boardState.boardStateCells[this.getX()][this.getY()].setContainsEnemy(1);</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {</span>
+<span class="nc" id="L134">            touch_reward_R();</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {</span>
+<span class="fc" id="L136">            touch_punishment();</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        } else if (boardState.boardStateCells[this.getX()][this.getY()].getContainsBonusReward() == 1) {</span>
+<span class="nc" id="L138">            touch_bonus_reward();</span>
+        }
+<span class="fc" id="L140">    }</span>
+
+    /**
+     * When the Enemy object touch reward or occupy the same position, it will remove the reward label so
+     * that only Enemy label will be shown on the board
+     *
+     */
+    public void touch_reward_R(){
+<span class="fc" id="L148">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L149">        Board board = Board.getInstance();</span>
+<span class="fc" id="L150">        ArrayList&lt;Rewards&gt; rewards = boardState.getReward_R();</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        for (Rewards reward : rewards) {</span>
+<span class="fc" id="L152">            int rewardX = reward.getX();</span>
+<span class="fc" id="L153">            int rewardY = reward.getY();</span>
+<span class="pc bpc" id="L154" title="1 of 4 branches missed.">            if (rewardX == this.getX() &amp;&amp; rewardY == this.getY()) {</span>
+<span class="fc" id="L155">                board.getCells()[rewardX][rewardY].remove(reward.getLabel());</span>
+            }
+<span class="fc" id="L157">        }</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * When the Enemy object leave position that is previously occupied by regular reward, it will re-add
+     * the reward label so that it will be shown on the board
+     *
+     */
+    public void leave_reward_R(){
+<span class="fc" id="L166">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L167">        Board board = Board.getInstance();</span>
+<span class="fc" id="L168">        ArrayList&lt;Rewards&gt; rewards = boardState.getReward_R();</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        for (Rewards reward : rewards) {</span>
+<span class="fc" id="L170">            int rewardX = reward.getX();</span>
+<span class="fc" id="L171">            int rewardY = reward.getY();</span>
+<span class="pc bpc" id="L172" title="1 of 4 branches missed.">            if (rewardX == this.getX() &amp;&amp; rewardY == this.getY()) {</span>
+<span class="fc" id="L173">                board.getCells()[rewardX][rewardY].add(reward.getLabel());</span>
+            }
+<span class="fc" id="L175">        }</span>
+<span class="fc" id="L176">    }</span>
+
+    /**
+     * When the Enemy object touch bonus reward or occupy the same position, it will remove the bonus reward label so
+     * that only Enemy label will be shown on the board
+     *
+     */
+    public void touch_bonus_reward(){
+<span class="fc" id="L184">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L185">        Board board = Board.getInstance();</span>
+<span class="fc" id="L186">        BonusReward BR = boardState.getBonusReward();</span>
+<span class="fc" id="L187">        board.getCells()[BR.getX()][BR.getY()].remove(BR.getLabel());</span>
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * When the Enemy object leave position that is previously occupied by bonus reward, it will re-add
+     * the bonus reward label so that it will be shown on the board
+     *
+     */
+    public void leave_bonus_reward(){
+<span class="fc" id="L196">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L197">        Board board = Board.getInstance();</span>
+<span class="fc" id="L198">        BonusReward BR = boardState.getBonusReward();</span>
+<span class="fc" id="L199">        board.getCells()[BR.getX()][BR.getY()].add(BR.getLabel());</span>
+<span class="fc" id="L200">    }</span>
+
+    /**
+     * When the Enemy object touch punishment or occupy the same position, it will remove the punishment label so
+     * that only Enemy label will be shown on the board
+     *
+     */
+    public void touch_punishment(){
+<span class="fc" id="L208">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L209">        Board board = Board.getInstance();</span>
+<span class="fc" id="L210">        ArrayList&lt;Punishment&gt; punishments = boardState.getPunishments();</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        for (Punishment punishment : punishments) {</span>
+<span class="fc" id="L212">            int punishmentX = punishment.getX();</span>
+<span class="fc" id="L213">            int punishmentY = punishment.getY();</span>
+<span class="pc bpc" id="L214" title="1 of 4 branches missed.">            if (punishmentX == this.getX() &amp;&amp; punishmentY == this.getY()) {</span>
+<span class="fc" id="L215">                board.getCells()[punishmentX][punishmentY].remove(punishment.getLabel());</span>
+            }
+<span class="fc" id="L217">        }</span>
+<span class="fc" id="L218">    }</span>
+
+    /**
+     * When the Enemy object leave position that is previously occupied by punishment, it will re-add
+     * the punishment label so that it will be shown on the board
+     *
+     */
+    public void leave_punishment(){
+<span class="fc" id="L226">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L227">        Board board = Board.getInstance();</span>
+<span class="fc" id="L228">        ArrayList&lt;Punishment&gt; punishments = boardState.getPunishments();</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        for (Punishment punishment : punishments) {</span>
+<span class="fc" id="L230">            int punishmentX = punishment.getX();</span>
+<span class="fc" id="L231">            int punishmentY = punishment.getY();</span>
+<span class="pc bpc" id="L232" title="1 of 4 branches missed.">            if (punishmentX == this.getX() &amp;&amp; punishmentY == this.getY()) {</span>
+<span class="fc" id="L233">                board.getCells()[punishmentX][punishmentY].add(punishment.getLabel());</span>
+            }
+<span class="fc" id="L235">        }</span>
+<span class="fc" id="L236">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

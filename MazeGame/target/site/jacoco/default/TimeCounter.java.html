@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimeCounter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">TimeCounter.java</span></div><h1>TimeCounter.java</h1><pre class="source lang-java linenums">import javax.swing.*;
+import java.awt.*;
+
+/**
+ *
+ * TimeCounter class creates the GUI of the TimeCounter component to display the time of the game.
+ * The game's time and turn will increment at each update of the time.
+ */
+public class TimeCounter {
+    private static TimeCounter instance;
+    private float time;
+    private int turn;
+    JLabel label;
+
+
+/**
+ * Creates a new TimeCounter used as the GUI display for the game's time. Initial time and turn are both set to 0.
+ */
+<span class="fc" id="L19">    private TimeCounter() {</span>
+<span class="fc" id="L20">        turn = 0;</span>
+<span class="fc" id="L21">        time = 0;</span>
+        // assigning label 'T' 'U' 'R' 'N' ':' '0' for each panel
+        JLabel temp;
+<span class="fc" id="L24">        label = new JLabel(&quot;T&quot;);</span>
+<span class="fc" id="L25">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L26">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L27">        Board.getInstance().getCells()[10][0].add(label);</span>
+<span class="fc" id="L28">        label = new JLabel(&quot;I&quot;);</span>
+<span class="fc" id="L29">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L30">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L31">        Board.getInstance().getCells()[11][0].add(label);</span>
+<span class="fc" id="L32">        label = new JLabel(&quot;M&quot;);</span>
+<span class="fc" id="L33">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L34">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L35">        Board.getInstance().getCells()[12][0].add(label);</span>
+<span class="fc" id="L36">        label = new JLabel(&quot;E&quot;);</span>
+<span class="fc" id="L37">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L38">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L39">        Board.getInstance().getCells()[13][0].add(label);</span>
+<span class="fc" id="L40">        label = new JLabel(&quot;:&quot;);</span>
+<span class="fc" id="L41">        label.setFont(new Font(&quot;Arial&quot;,1,20));</span>
+<span class="fc" id="L42">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L43">        Board.getInstance().getCells()[14][0].add(label);</span>
+<span class="fc" id="L44">        label = new JLabel(String.valueOf(time));</span>
+<span class="fc" id="L45">        label.setFont(new Font(&quot;Arial&quot;,1,16));</span>
+<span class="fc" id="L46">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L47">        Board.getInstance().getCells()[15][0].add(label);</span>
+<span class="fc" id="L48">    }</span>
+    /**
+     * @return the existing instance of TimeCounter or a new instance of counter if one does not exist.
+     */
+    public static TimeCounter getInstance() {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L54">            instance = new TimeCounter();</span>
+        }
+<span class="fc" id="L56">        return instance;</span>
+    }
+
+
+    /**
+     * Updates the global time value, turn value and TimeCounter GUI.
+     */
+    public void updateTime() {
+<span class="fc" id="L64">        this.time += 0.5;</span>
+<span class="fc" id="L65">        turn += 1;</span>
+        //remove the 0 panel and then add the updated one
+<span class="fc" id="L67">        Board.getInstance().getCells()[15][0].remove(label);</span>
+<span class="fc" id="L68">        label = new JLabel(String.valueOf(time));</span>
+<span class="fc" id="L69">        label.setFont(new Font(&quot;Arial&quot;,1,16));</span>
+<span class="fc" id="L70">        label.setForeground(Color.WHITE);</span>
+<span class="fc" id="L71">        Board.getInstance().getCells()[15][0].add(label);</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     *
+     * @return the time stored on TimeCounter.
+     */
+    public float getTime() {
+<span class="nc" id="L79">        return this.time;</span>
+    }
+
+    /**
+     *
+     * @return the turn stored on TimeCounter.
+     */
+    public int getTurn() {
+<span class="fc" id="L87">        return turn;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

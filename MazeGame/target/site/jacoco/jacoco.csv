@@ -1,0 +1,18 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+MazeGame,default,Punishment,0,75,0,2,0,14,0,4,0,3
+MazeGame,default,Player,67,308,21,37,25,73,17,23,3,8
+MazeGame,default,Position,0,23,0,0,0,10,0,5,0,5
+MazeGame,default,EndScreen,63,0,0,0,13,0,2,0,2,0
+MazeGame,default,ScoreBoard,0,269,0,2,0,42,0,5,0,4
+MazeGame,default,BoardState,59,579,17,73,16,115,14,48,0,17
+MazeGame,default,Initialize,144,0,8,0,43,0,5,0,1,0
+MazeGame,default,BonusReward,25,82,1,1,4,18,1,4,0,4
+MazeGame,default,LostScreen,35,0,0,0,9,0,2,0,2,0
+MazeGame,default,Initialize.new WindowAdapter() {...},9,0,0,0,3,0,2,0,2,0
+MazeGame,default,MovingCharacter,3,189,7,9,1,46,8,6,1,5
+MazeGame,default,Board,7,87,0,6,3,24,2,9,2,6
+MazeGame,default,Enemy,27,506,13,37,11,104,12,23,0,10
+MazeGame,default,Rewards,0,75,0,2,0,14,0,4,0,3
+MazeGame,default,TimeCounter,3,251,0,2,1,40,1,5,1,4
+MazeGame,default,Cell,0,78,1,5,0,28,1,16,0,14
+MazeGame,default,Main,8,0,0,0,3,0,2,0,2,0

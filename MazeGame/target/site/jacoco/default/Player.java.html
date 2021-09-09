@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.awt.Image;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.swing.*;
+
+/**
+ *
+ * Player class create an GUI object on the board that able to move by user input using arrow keys.
+ * Player class will get need to collect all rewards and reach the end point without getting caught by
+ * Enemy or having the score below zero.
+ */
+public class Player extends MovingCharacter implements KeyListener {
+<span class="fc" id="L17">    private static Player instance = null;</span>
+<span class="fc" id="L18">    private String nextMove = &quot;None&quot;;</span>
+<span class="fc" id="L19">    public boolean isAtEnd = false;</span>
+
+    /**
+     * @return the existing instance of Player or a new instance of Player if one does not exist.
+     */
+    public static Player getInstance() {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (instance == null) {</span>
+            try {
+<span class="fc" id="L27">                instance = new Player(0, 1);</span>
+<span class="fc" id="L28">                return instance;</span>
+<span class="nc" id="L29">            } catch (IOException e) {</span>
+<span class="nc" id="L30">                e.printStackTrace();</span>
+            }
+        }
+<span class="fc" id="L33">        return instance;</span>
+    }
+
+    /**
+     * Create Player object on the board at (x,y) position
+     *
+     * @param x       is contained within the interval [0, 19] as dictated by Board and BoardState
+     * @param y       is contained within the interval [0, 9] as dictated by Board and BoardState
+     */
+    private Player(int x, int y) throws IOException
+    {
+<span class="fc" id="L44">        super(x, y);</span>
+<span class="fc" id="L45">        Image image = ImageIO.read(new File(&quot;src/playertest.png&quot;));</span>
+<span class="fc" id="L46">        this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));</span>
+
+        // set player on Board at position (x, y)
+<span class="fc" id="L49">        Board board = Board.getInstance();</span>
+<span class="fc" id="L50">        board.getCells()[x][y].add(label);</span>
+<span class="fc" id="L51">    }</span>
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+<span class="nc" id="L55">        int key = e.getKeyCode();</span>
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (key == KeyEvent.VK_ESCAPE) // pause using esc</span>
+        {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if(!Board.getInstance().getPause_game())</span>
+<span class="nc" id="L60">                Board.getInstance().setPause_game(true);</span>
+            else{
+<span class="nc" id="L62">                Board.getInstance().setPause_game(false);</span>
+            }
+        }
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        else if(Board.getInstance().getPause_game()) // will skip movement when its paused</span>
+<span class="nc" id="L66">            return;</span>
+
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(key == KeyEvent.VK_UP) { // move up</span>
+<span class="nc" id="L69">            this.nextMove = &quot;n&quot;;</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        } else if (key == KeyEvent.VK_DOWN) { // move down</span>
+<span class="nc" id="L71">            this.nextMove = &quot;s&quot;;</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        } else if (key == KeyEvent.VK_LEFT) { // move left</span>
+<span class="nc" id="L73">            this.nextMove = &quot;w&quot;;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if (key == KeyEvent.VK_RIGHT) { //move right</span>
+<span class="nc" id="L75">            this.nextMove = &quot;e&quot;;</span>
+        }
+<span class="nc" id="L77">    }</span>
+
+    @Override
+<span class="nc" id="L80">    public void keyReleased(KeyEvent e) {}</span>
+
+    @Override
+<span class="nc" id="L83">    public void keyTyped(KeyEvent e) {}</span>
+
+    /**
+     * Utilize the nextMove string generated by KeyListener and then directed the movement using method inherited
+     * from MovingCharacter. If the next position contain object such as reward or punishment then call the touch method
+     * respective to the object encountered. When Player reach end point and have all the reward collected, the Player wins the game.
+     *
+     */
+    public void move() {
+<span class="fc" id="L92">        BoardState boardState = BoardState.getInstance();</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (this.nextMove.equals(&quot;w&quot;)) {</span>
+<span class="nc" id="L94">            this.moveWest();</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        } else if (this.nextMove.equals(&quot;e&quot;)) {</span>
+<span class="nc" id="L96">            this.moveEast();</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        } else if (this.nextMove.equals(&quot;n&quot;)) {</span>
+<span class="nc" id="L98">            this.moveNorth();</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        } else if (this.nextMove.equals(&quot;s&quot;)) {</span>
+<span class="nc" id="L100">            this.moveSouth();</span>
+        }
+<span class="fc" id="L102">        this.nextMove = &quot;None&quot;;</span>
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {</span>
+<span class="fc" id="L105">            touch_reward_R();</span>
+        }
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsPunishment() == 1) {</span>
+<span class="fc" id="L109">            touch_punishment();</span>
+        }
+
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (boardState.boardStateCells[this.getX()][this.getY()].getContainsBonusReward() == 1) {</span>
+<span class="nc" id="L113">            touch_bonus_reward();</span>
+        }
+
+        // When player reaches end cell sets continue_game to zero
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (boardState.boardStateCells[this.getX()][this.getY()].getContainEndCell() == 1) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (this.allRewardsCollected() == 1) {</span>
+<span class="fc" id="L119">                Board.getInstance().setContinue_game(0);</span>
+<span class="fc" id="L120">                this.isAtEnd = true;</span>
+            }
+        }
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * When the Player object touch reward or occupy the same position, it will remove the regular reward encountered from
+     * the board and increase the score.
+     *
+     */
+    public void touch_reward_R(){
+<span class="fc" id="L131">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L132">        ArrayList&lt;Rewards&gt; rewards = boardState.getReward_R();</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        for (Rewards reward : rewards) {</span>
+<span class="fc" id="L134">            int rewardX = reward.getX();</span>
+<span class="fc" id="L135">            int rewardY = reward.getY();</span>
+<span class="fc bfc" id="L136" title="All 4 branches covered.">            if (rewardX == this.getX() &amp;&amp; rewardY == this.getY()) {</span>
+<span class="fc" id="L137">                reward.collectedRR();</span>
+<span class="fc" id="L138">                boardState.boardStateCells[rewardX][rewardY].setContainsReward(0);</span>
+            }
+<span class="fc" id="L140">        }</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * When the Player object touch bonus reward or occupy the same position, it will remove the bonus reward encountered
+     * from the board and increase the score.
+     *
+     */
+    public void touch_bonus_reward(){
+<span class="fc" id="L149">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L150">        BonusReward BR = boardState.getBonusReward();</span>
+<span class="fc" id="L151">        int bonusRewardX = BR.getX();</span>
+<span class="fc" id="L152">        int bonusRewardY = BR.getY();</span>
+<span class="pc bpc" id="L153" title="2 of 4 branches missed.">        if (bonusRewardX == this.getX() &amp;&amp; bonusRewardY == this.getY()) {</span>
+<span class="fc" id="L154">            BR.collectedBR();</span>
+<span class="fc" id="L155">            boardState.boardStateCells[bonusRewardX][bonusRewardY].setContainsBonusReward(0);</span>
+        }
+
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * When the Player object touch punishment or occupy the same position, it will remove the punishment encountered
+     * from the board and decrease the score. If score below zero, game over player lose.
+     *
+     */
+    public void touch_punishment(){
+<span class="fc" id="L166">        ScoreBoard scoreBoard = ScoreBoard.getInstance();</span>
+<span class="fc" id="L167">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L168">        Board board = Board.getInstance();</span>
+<span class="fc" id="L169">        ArrayList&lt;Punishment&gt; punishments = boardState.getPunishments();</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        for (Punishment punishment : punishments) {</span>
+<span class="fc" id="L171">            int punishmentX = punishment.getX();</span>
+<span class="fc" id="L172">            int punishmentY = punishment.getY();</span>
+<span class="fc bfc" id="L173" title="All 4 branches covered.">            if (punishmentX == this.getX() &amp;&amp; punishmentY == this.getY()) {</span>
+<span class="fc" id="L174">                punishment.collectedPunishment();</span>
+<span class="fc" id="L175">                boardState.boardStateCells[punishmentX][punishmentY].setContainsPunishment(0);</span>
+            }
+<span class="fc" id="L177">        }</span>
+
+        // end game if score is negative
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (scoreBoard.getScore() &lt; 0) {</span>
+<span class="fc" id="L181">            Board.getInstance().setContinue_game(0);</span>
+        }
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Check if the Player have collected all the regular rewards generated by the board.
+     *
+     * @return int if all collected return 1; if not return 0
+     */
+    public int allRewardsCollected() {
+<span class="fc" id="L191">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L192">        ArrayList&lt;Rewards&gt; rewards = boardState.getReward_R();</span>
+<span class="fc" id="L193">        int numCollectedRewards = 0;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        for (Rewards reward : rewards) {</span>
+<span class="fc" id="L195">            int rewardX = reward.getX();</span>
+<span class="fc" id="L196">            int rewardY = reward.getY();</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">            if (boardState.boardStateCells[rewardX][rewardY].getContainsReward() == 0) {</span>
+<span class="fc" id="L198">                numCollectedRewards++;</span>
+            }
+<span class="fc" id="L200">        }</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (numCollectedRewards == rewards.size()) {</span>
+<span class="fc" id="L202">            return 1;</span>
+        } else {
+<span class="fc" id="L204">            return 0;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

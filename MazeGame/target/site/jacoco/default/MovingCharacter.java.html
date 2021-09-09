@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MovingCharacter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">MovingCharacter.java</span></div><h1>MovingCharacter.java</h1><pre class="source lang-java linenums">import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+
+/**
+ * 
+ * The abstract MovingCharacter controls the movement of the player and/or enemy by altering it's cell position on board. 
+ * Player and enemies are restricted from moving onto cells that is solid, and no object is created from MovingCharacter.
+ */
+abstract class MovingCharacter extends Position{
+    protected JLabel label;
+
+    /**
+     * 
+     * @param x the x coordinate of the player in the range of [0, 19] inherits from Position.
+     * @param y the y coordinate of the player in the range of [0, 9] inherits from Position.
+     * @throws IOException if (x, y) coordinates not within range
+     */
+    protected MovingCharacter(int x, int y) throws IOException {
+<span class="fc" id="L20">        super(x, y);</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * 
+     * @return JLabel of player
+     */
+    public JLabel getLabel() {
+<span class="nc" id="L28">        return label;</span>
+    }
+
+    /**
+     * The method moveWest gets the instance of Board and BoardState and 
+     * moves the position of the object to its left by 1. 
+     */
+    protected void moveWest() {
+<span class="fc" id="L36">        Board board = Board.getInstance();</span>
+<span class="fc" id="L37">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L38">        int currentX = this.getX();</span>
+<span class="fc" id="L39">        int currentY = this.getY();</span>
+<span class="fc" id="L40">        int nextX = currentX - 1;</span>
+
+<span class="pc bpc" id="L42" title="2 of 4 branches missed.">        if((nextX &gt;= 0) &amp;&amp; (boardState.getCellIsSolid(nextX, currentY) == 0)) {</span>
+<span class="fc" id="L43">            JPanel[][] cells = board.getCells();</span>
+<span class="fc" id="L44">            cells[currentX][currentY].remove(this.label);</span>
+<span class="fc" id="L45">            cells[nextX][currentY].add(this.label); // update JFrame</span>
+<span class="fc" id="L46">            this.setX(nextX); // update x position</span>
+        }
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * The method moveEast gets the instance of Board and BoardState and 
+     * moves the position of the object to its right by 1.
+     */
+    protected void moveEast() {
+<span class="fc" id="L55">        Board board = Board.getInstance();</span>
+<span class="fc" id="L56">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L57">        int currentX = this.getX();</span>
+<span class="fc" id="L58">        int currentY = this.getY();</span>
+<span class="fc" id="L59">        int nextX = currentX + 1;</span>
+<span class="pc bpc" id="L60" title="2 of 4 branches missed.">        if((nextX &lt; boardState.getWidth()) &amp;&amp; (boardState.getCellIsSolid(nextX, currentY) == 0)) {</span>
+<span class="fc" id="L61">            JPanel[][] cells = board.getCells();</span>
+<span class="fc" id="L62">            cells[currentX][currentY].remove(this.label);</span>
+<span class="fc" id="L63">            cells[nextX][currentY].add(this.label);</span>
+<span class="fc" id="L64">            this.setX(nextX);</span>
+        }
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * The method moveNorth gets the instance of Board and BoardState and 
+     * moves the position of the object down by 1. 
+     */
+    protected void moveNorth() {
+<span class="fc" id="L73">        Board board = Board.getInstance();</span>
+<span class="fc" id="L74">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L75">        int currentX = this.getX();</span>
+<span class="fc" id="L76">        int currentY = this.getY();</span>
+<span class="fc" id="L77">        int nextY = currentY - 1;</span>
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        if((nextY &gt;= 0) &amp;&amp; (boardState.getCellIsSolid(currentX, nextY) == 0)) {</span>
+<span class="fc" id="L79">            JPanel[][] cells = board.getCells();</span>
+<span class="fc" id="L80">            cells[currentX][currentY].remove(this.label);</span>
+<span class="fc" id="L81">            cells[currentX][nextY].add(this.label);</span>
+<span class="fc" id="L82">            this.setY(nextY);</span>
+        }
+<span class="fc" id="L84">    }</span>
+
+    /**
+     * The method moveWest gets the instance of Board and BoardState and 
+     * moves the position of the object up by 1. 
+     */
+    protected void moveSouth() {
+<span class="fc" id="L91">        Board board = Board.getInstance();</span>
+<span class="fc" id="L92">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc" id="L93">        int currentX = this.getX();</span>
+<span class="fc" id="L94">        int currentY = this.getY();</span>
+<span class="fc" id="L95">        int nextY = currentY + 1;</span>
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">        if((nextY &lt; boardState.getHeight()) &amp;&amp; (boardState.getCellIsSolid(currentX, nextY) == 0)) {</span>
+<span class="fc" id="L97">            JPanel[][] cells = board.getCells();</span>
+<span class="fc" id="L98">            cells[currentX][currentY].remove(this.label);</span>
+<span class="fc" id="L99">            cells[currentX][nextY].add(this.label);</span>
+<span class="fc" id="L100">            this.setY(nextY);</span>
+        }
+<span class="fc" id="L102">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

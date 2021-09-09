@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoardState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">BoardState.java</span></div><h1>BoardState.java</h1><pre class="source lang-java linenums">import java.awt.*;
+import javax.swing.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+
+import static java.lang.System.exit;
+
+/**
+ * BoardState stores information about the states of each (x, y) position
+ * on the Board. It also creates and keeps track of the start cell, end cell,
+ * walls, punishments and regular rewards.
+<span class="fc" id="L13"> */</span>
+<span class="fc" id="L14">public class BoardState {</span>
+<span class="fc" id="L15">    private static BoardState instance = null;</span>
+<span class="fc" id="L16">    private ArrayList&lt;Punishment&gt; punishments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L17">    private ArrayList&lt;Rewards&gt; rewards_R = new ArrayList&lt;&gt;();</span>
+    private BonusReward bonusReward = null;
+    private int hasBonusReward = 0;
+    private int width, height;
+    public Cell[][] boardStateCells;
+
+    /**
+     * @return the existing instance of BoardState or a new instance of BoardState if one does not exist.
+<span class="fc bfc" id="L25" title="All 2 branches covered.">     */</span>
+<span class="fc" id="L26">    public static BoardState getInstance() {</span>
+<span class="fc" id="L27">        if (instance == null)</span>
+            instance = new BoardState();
+        return instance;
+    }
+
+    /**
+     * Create a new BoardState to keep track of each (x, y) position's state. BoardState consists of
+     * ArrayLists of Punishment and Rewards, a BonusReward along with a 2D array of Cells that store
+     * information about each (x, y) position on the Board. It also records the width (20) and
+<span class="fc" id="L36">     * height (10) of the Board and keeps track of whether there is a BonusReward in existence.</span>
+<span class="fc" id="L37">     */</span>
+<span class="fc" id="L38">    private BoardState() {</span>
+<span class="fc" id="L39">        Board board = Board.getInstance();</span>
+        this.width = 20;
+<span class="fc" id="L41">        this.height = 10;</span>
+
+        Cell[][] boardStateCells = new Cell[width][height];
+<span class="fc bfc" id="L44" title="All 2 branches covered."></span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        // initialize empty cells and boundary walls</span>
+<span class="fc bfc" id="L46" title="All 4 branches covered.">        for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc" id="L47">            for (int x = 0; x &lt; width; x++) {</span>
+                if (x % (width - 1) == 0 || y % (height - 1) == 0) {
+<span class="fc" id="L49">                    boardStateCells[x][y] = new Cell(x, y,1); // set boundary wall</span>
+                } else {
+                    boardStateCells[x][y] = new Cell(x, y,0); // set empty cell
+                }
+            }
+        }
+<span class="fc" id="L55"></span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        // generate semi-random barriers</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        Random random = new Random();</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">        for (int y = 2; y &lt; height - 2; y++) {</span>
+<span class="fc" id="L59">            for (int x = 2; x &lt; width - 2; x++) {</span>
+                if (y % 2 == 0 &amp;&amp; random.nextFloat() &lt; 0.50) {
+                    boardStateCells[x][y].setIsSolid(1);
+                }
+            }
+        }
+<span class="fc" id="L65"></span>
+<span class="fc" id="L66">        Cell FreeCell = new Cell(0,0,0);</span>
+<span class="fc" id="L67">        // generate punishments</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        int maxNumPunishments = 5;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        int minNumPunishments = 2;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        int numPunishments = minNumPunishments + random.nextInt(4); // minimum + random from 0-3 (4 exclusive)</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        while (numPunishments &lt; maxNumPunishments) {</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">            int limit = 0;</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            while (getRandomFreeCell(FreeCell,1,width-1,2,height-1,random) == 0) //will keep looping until random free cell is found</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            {</span>
+                limit++;
+<span class="fc" id="L76">                if (limit &gt; 5) {</span>
+<span class="fc" id="L77">                    System.out.println(&quot;getRandomFreeCell fail to find free cell and reach limit&quot;);</span>
+<span class="fc" id="L78">                    exit(0);</span>
+<span class="fc" id="L79">                }</span>
+<span class="nc" id="L80">            }</span>
+<span class="nc" id="L81">                try {</span>
+<span class="fc" id="L82">                    Punishment p = new Punishment(FreeCell.getX(), FreeCell.getY());</span>
+                    punishments.add(p);
+                    boardStateCells[FreeCell.getX()][FreeCell.getY()].setContainsPunishment(1);
+                    numPunishments++;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+<span class="fc" id="L89">        }</span>
+<span class="fc" id="L90"></span>
+<span class="fc" id="L91">        // generate rewards</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        int maxNumRewards = 5;</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        int minNumRewards = 2;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        int numRewards =minNumRewards + random.nextInt(4); // minimum + random from 0-3 (4 exclusive)</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        while (numRewards &lt; maxNumRewards) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            int limit = 0;</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            while (getRandomFreeCell(FreeCell,1,width-1,1,height-1,random) == 0) //will keep looping until random free cell is found</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            {</span>
+                limit++;
+<span class="fc" id="L100">                if (limit &gt; 5) {</span>
+<span class="fc" id="L101">                    System.out.println(&quot;getRandomFreeCell fail to find free cell and reach limit&quot;);</span>
+<span class="fc" id="L102">                    exit(0);</span>
+<span class="fc" id="L103">                }</span>
+<span class="nc" id="L104">            }</span>
+<span class="nc" id="L105">            try {</span>
+<span class="fc" id="L106">                Rewards r = new Rewards(FreeCell.getX(), FreeCell.getY());</span>
+                rewards_R.add(r);
+                boardStateCells[FreeCell.getX()][FreeCell.getY()].setContainsReward(1);
+                numRewards++;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+<span class="fc" id="L113">        }</span>
+<span class="fc" id="L114"></span>
+<span class="fc" id="L115">        // set start and end cells</span>
+<span class="fc" id="L116">        JPanel[][] cells = board.getCells();</span>
+<span class="fc" id="L117">        boardStateCells[width - 1][height - 2].setIsSolid(0);</span>
+<span class="fc" id="L118">        boardStateCells[0][1].setIsSolid(0);</span>
+<span class="fc" id="L119">        cells[0][1].setBackground(Color.GREEN);</span>
+        this.boardStateCells = boardStateCells;
+        boardStateCells[width - 1][height - 2].setContainEndCell(1);
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        cells[width - 1][height - 2].setBackground(Color.ORANGE);</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered."></span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        // shade in solid cells</span>
+<span class="fc" id="L125">        for (int y = 0; y &lt; height; y++) {</span>
+            for (int x = 0; x &lt; width; x++) {
+                if (boardStateCells[x][y].getIsSolid() == 1) {
+                    cells[x][y].setBackground(Color.BLACK);
+<span class="fc" id="L129">                }</span>
+            }
+        }
+    }
+
+    /**
+<span class="fc" id="L135">     * @return width of the Board in Cells</span>
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+<span class="fc" id="L142">     * @return height of the Board in Cells</span>
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * @param x the x coordinate of the Cell to be checked - is limited to the interval [0, 19]
+     * @param y the y coordinate of the Cell to be checked - is limited to the interval [0, 9]
+<span class="pc bpc" id="L151" title="2 of 8 branches missed.">     * @return whether the Cell is solid (1) or not solid (0) or does not exist/is out of range (-1)</span>
+<span class="fc" id="L152">     */</span>
+    public int getCellIsSolid(int x, int y) {
+<span class="fc" id="L154">        if (x &gt;= 0 &amp;&amp; x &lt; this.width &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; this.height) {</span>
+            return (this.boardStateCells[x][y].getIsSolid());
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * @param x the x coordinate of the Cell to be checked - is limited to the interval [0, 19]
+     * @param y the y coordinate of the Cell to be checked - is limited to the interval [0, 9]
+     * @return whether the Cell contains an Enemy (1), does not contain an Enemy (0)
+<span class="pc bpc" id="L165" title="2 of 8 branches missed.">     *         or does not exist/is out of range (-1)</span>
+<span class="fc" id="L166">     */</span>
+    public int getCellContainsEnemy(int x, int y) {
+<span class="fc" id="L168">        if (x &gt;= 0 &amp;&amp; x &lt; this.width &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; this.height) {</span>
+            return (this.boardStateCells[x][y].getContainsEnemy());
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+<span class="fc" id="L176">     * @param bonusReward newly spawned BonusReward</span>
+<span class="fc" id="L177">     */</span>
+    public void setBonusReward(BonusReward bonusReward) {
+        this.bonusReward = bonusReward;
+    }
+
+    /**
+<span class="fc" id="L183">     * @return whether there is a BonusReward in existence</span>
+     */
+    public int getHasBonusReward() {
+        return hasBonusReward;
+    }
+
+    /**
+<span class="fc" id="L190">     * @param hasBonusReward whether there is a BonusReward in existence</span>
+<span class="fc" id="L191">     */</span>
+    public void setHasBonusReward(int hasBonusReward) {
+        this.hasBonusReward = hasBonusReward;
+<span class="fc" id="L194">    }</span>
+<span class="fc" id="L195"></span>
+<span class="fc" id="L196">    public void spawnBR() {</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        BoardState boardState = BoardState.getInstance();</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        Board board = Board.getInstance();</span>
+<span class="nc" id="L199">        Random random = new Random();</span>
+<span class="nc" id="L200">        if (boardState.getHasBonusReward() == 0) {</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">            if (random.nextFloat() &lt; 0.05) {</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">                int bonusRewardX = random.nextInt(boardState.getWidth());</span>
+                int bonusRewardY = random.nextInt(boardState.getHeight());
+<span class="nc" id="L204">                if (boardState.getCellIsSolid(bonusRewardX, bonusRewardY) == 0 &amp;&amp;</span>
+<span class="nc" id="L205">                    boardState.boardStateCells[bonusRewardX][bonusRewardY].getContainsRewardOrPunishment() == 0) {</span>
+<span class="nc" id="L206">                    try {</span>
+<span class="nc" id="L207">                        BonusReward BR = new BonusReward(bonusRewardX, bonusRewardY);</span>
+<span class="nc" id="L208">                        boardState.boardStateCells[bonusRewardX][bonusRewardY].setContainsBonusReward(1);</span>
+<span class="nc" id="L209">                        boardState.setBonusReward(BR);</span>
+<span class="nc" id="L210">                        boardState.setHasBonusReward(1);</span>
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+<span class="fc" id="L214">                }</span>
+            }
+        }
+    }
+
+    /**
+     * Check whether the BonusReward has expired. Do nothing if a BonusReward does not exist
+<span class="fc" id="L221">     * or has not expired.</span>
+<span class="fc" id="L222">     */</span>
+<span class="fc" id="L223">    public void checkBonusRewardExpiration() {</span>
+<span class="fc" id="L224">        TimeCounter turnCounter = TimeCounter.getInstance();</span>
+<span class="fc" id="L225">        BoardState boardState = BoardState.getInstance();</span>
+<span class="pc bpc" id="L226" title="2 of 4 branches missed.">        Board board = Board.getInstance();</span>
+<span class="fc" id="L227">        BonusReward BR = boardState.getBonusReward();</span>
+<span class="fc" id="L228">        int currentTurn = turnCounter.getTurn();</span>
+<span class="fc" id="L229">        if (BR != null &amp;&amp; currentTurn &gt; BR.getExpiresAfter()) {</span>
+<span class="fc" id="L230">            int bonusRewardX = BR.getX();</span>
+<span class="fc" id="L231">            int bonusRewardY = BR.getY();</span>
+            board.getCells()[bonusRewardX][bonusRewardY].remove(BR.getLabel());
+<span class="fc" id="L233">            boardState.boardStateCells[bonusRewardX][bonusRewardY].setContainsBonusReward(0);</span>
+            boardState.setHasBonusReward(0);
+        }
+    }
+
+    /**
+     * Used to check whether an enemy has caught up the the player (if it is the
+     * enemy's turn and the squared distance between the player and the enemy is 1)
+     *
+     * @param x1 the x coordinate of an enemy - is limited to the interval [0, 19]
+     * @param y1 the y coordinate of an enemy - is limited to the interval [0, 9]
+     * @param x2 the x coordinate of the player - is limited to the interval [0, 19]
+     * @param y2 the y coordinate of the player - is limited to the interval [0, 9]
+     * @return
+     */
+<span class="fc" id="L248">    public int calculateSquaredDistance(int x1, int y1, int x2, int y2) {</span>
+<span class="fc" id="L249">        int squaredDistance;</span>
+
+        int cell1IsSolid = getCellIsSolid(x1, y1);
+<span class="pc bpc" id="L252" title="1 of 4 branches missed.">        int cell2IsSolid = getCellIsSolid(x2, y2);</span>
+<span class="fc" id="L253"></span>
+        // Set squaredDistance to 2147483647 if a cell is solid or out of bounds
+<span class="fc" id="L255">        if ((cell1IsSolid != 0) || (cell2IsSolid != 0)) {</span>
+<span class="fc" id="L256">            squaredDistance = Integer.MAX_VALUE;</span>
+<span class="fc" id="L257">        } else {</span>
+            int differenceX = (x2 - x1);
+<span class="fc" id="L259">            int differenceY = (y2 - y1);</span>
+            squaredDistance = differenceX * differenceX + differenceY * differenceY;
+        }
+        return squaredDistance;
+    }
+
+    /**
+     * Used in the enemy's path finding algorithm. This method is identical to
+     * calculateSquaredDistance with the exception of an additional check which
+     * ensures that enemies will not move to Cells that contain another enemy.
+     *
+     * @param x1 the x coordinate of an enemy - is limited to the interval [0, 19]
+     * @param y1 the y coordinate of an enemy - is limited to the interval [0, 9]
+     * @param x2 the x coordinate of the player - is limited to the interval [0, 19]
+     * @param y2 the y coordinate of the player - is limited to the interval [0, 9]
+     * @return
+     */
+<span class="fc" id="L276">    public int calculateSquaredDistanceWithEnemyCheck(int x1, int y1, int x2, int y2) {</span>
+<span class="fc" id="L277">        int squaredDistance;</span>
+<span class="fc" id="L278"></span>
+        int cell1IsSolid = getCellIsSolid(x1, y1);
+        int cell2IsSolid = getCellIsSolid(x2, y2);
+<span class="pc bpc" id="L281" title="2 of 6 branches missed.">        int cell1ContainsEnemy = getCellContainsEnemy(x1, y1);</span>
+<span class="fc" id="L282"></span>
+        // Set squaredDistance to 2147483647 if a cell is solid, out of bounds or contains an enemy
+<span class="fc" id="L284">        if ((cell1IsSolid != 0) || (cell1ContainsEnemy == 1) || (cell2IsSolid != 0)) {</span>
+<span class="fc" id="L285">            squaredDistance = Integer.MAX_VALUE;</span>
+<span class="fc" id="L286">        } else {</span>
+            int differenceX = (x2 - x1);
+<span class="fc" id="L288">            int differenceY = (y2 - y1);</span>
+            squaredDistance = differenceX * differenceX + differenceY * differenceY;
+        }
+        return squaredDistance;
+    }
+
+<span class="fc" id="L294">    /**</span>
+     * @return all generated Rewards
+     */
+    public ArrayList&lt;Rewards&gt; getReward_R() { return rewards_R; }
+
+
+<span class="fc" id="L300">    /**</span>
+     * @return all generated Punishments
+     */
+    public ArrayList&lt;Punishment&gt; getPunishments() { return punishments; }
+
+<span class="fc" id="L305">    /**</span>
+     * @return the generated BonusReward
+     */
+    public BonusReward getBonusReward() { return this.bonusReward; }
+
+    /**
+     * Searching for a random free cell by checking from Xstart to Xend and Ystart to Yend with a random generator to
+     * pick.
+     *
+     * @param free the cell that will be modified as the free random cell
+     * @param Xstart the x coordinate of the starting cell for searching
+     * @param Xend the x coordinate of the end cell for searching
+     * @param Ystart the y coordinate of the start cell for searching
+     * @param Yend the y coordinate of the end cell for searching
+     * @return int 1 for found, 0 for not found
+     */
+    public int getRandomFreeCell(Cell free, int Xstart, int Xend, int Ystart, int Yend ,Random random){
+        for (int y = Ystart; y &lt; Yend; y++) {
+            for (int x = Xstart; x &lt; Xend; x++) {
+                if (boardStateCells[x][y].getContainsRewardOrPunishment() == 0 &amp;&amp;
+                        boardStateCells[x][y].getIsSolid() == 0 &amp;&amp;
+                        random.nextFloat() &lt; 0.05) {
+                        free.setX(x);
+                        free.setY(y);
+                        return 1;
+                }
+            }
+        }
+        return 0;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

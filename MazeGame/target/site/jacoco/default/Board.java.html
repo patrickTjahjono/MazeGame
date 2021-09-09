@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.Border;
+
+/**
+ * The Board is used as the GUI. It is used to display the score, time, player, enemies, rewards,
+ * punishments, walls, along with the start and end cells. Board also keeps track of whether the
+ * game should continue and whether the game is paused.
+ */
+public class Board extends JPanel {
+<span class="fc" id="L11">    private static Board instance = null;</span>
+    private JPanel[][] cells;
+    private int continue_game;
+    private boolean pause_game;
+
+    /**
+     * @return the existing instance of Board or a new instance of Board if one does not exist
+     */
+    public static Board getInstance() {
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (instance == null)</span>
+<span class="fc" id="L21">            instance = new Board();</span>
+<span class="fc" id="L22">        return instance;</span>
+    }
+
+    /**
+     * Create a new Board to be used as the GUI. The Board is a 2D array of JPanels that is
+     * 20 cells wide and 10 cells tall. Cells are 32 by 32 pixels and are initially white
+     * with black borders.
+     */
+<span class="fc" id="L30">    private Board() {</span>
+<span class="fc" id="L31">        pause_game = false;</span>
+<span class="fc" id="L32">        continue_game = 1;</span>
+<span class="fc" id="L33">        JPanel[][] cells = new JPanel[20][10];</span>
+<span class="fc" id="L34">        setLayout(new GridLayout(10, 20));</span>
+<span class="fc" id="L35">        Dimension cellDimensions = new Dimension(32, 32);</span>
+<span class="fc" id="L36">        Border blackBorder = BorderFactory.createLineBorder(Color.black);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (int y = 0; y &lt; 10; y++) {</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            for (int x = 0; x &lt; 20; x++) {</span>
+<span class="fc" id="L39">                JPanel cell = new JPanel();</span>
+<span class="fc" id="L40">                cell.setPreferredSize(cellDimensions);</span>
+<span class="fc" id="L41">                cell.setBorder(blackBorder);</span>
+<span class="fc" id="L42">                add(cell);</span>
+<span class="fc" id="L43">                cells[x][y] = cell;</span>
+            }
+        }
+<span class="fc" id="L46">        this.cells = cells;</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * @return the 2D array of JPanels
+     */
+    public JPanel[][] getCells() {
+<span class="fc" id="L53">        return cells;</span>
+    }
+
+    /**
+     * @return whether the game should continue (1) or terminate (0)
+     */
+    public int getContinue_game() {
+<span class="fc" id="L60">        return continue_game;</span>
+    }
+
+    /**
+     * @param i whether the game should continue (1) or terminate (0)
+     */
+    public void setContinue_game(int i) {
+<span class="fc" id="L67">        this.continue_game = i;</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * @return whether the game is paused (true) or not paused (false)
+     */
+    public boolean getPause_game(){
+<span class="nc" id="L74">        return pause_game;</span>
+    }
+
+    /**
+     * @param bool whether the game is paused (true) or not paused (false)
+     */
+    public void setPause_game(boolean bool) {
+<span class="nc" id="L81">        this.pause_game = bool;</span>
+<span class="nc" id="L82">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

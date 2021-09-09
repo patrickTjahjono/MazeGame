@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Rewards.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MazeGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Rewards.java</span></div><h1>Rewards.java</h1><pre class="source lang-java linenums">import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * 
+ * The Rewards class creates the GUI object for regular rewards and position obejcts on board. 
+ * If Rewards object is collected by the player, it will be removed from board, and scoreBoard gets updated.
+ */
+public class Rewards extends Position{
+    private JLabel label;
+
+    /**
+     * 
+     * Creates a new Reward on Board at (x, y) position. 
+     * 
+     * @param x the x coordinate that the reward object to be placed on, range from [0, 19].
+     * @param y the y coordinate that the reward object to be placed on, range from [0, 20].
+     * @throws IOException if (x, y) coordinate is out of range.
+     */
+    public Rewards(int x, int y) throws IOException {
+<span class="fc" id="L24">        super(x, y);</span>
+<span class="fc" id="L25">        Image image = ImageIO.read(new File(&quot;src/reward.png&quot;));</span>
+<span class="fc" id="L26">        this.label = new JLabel(new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(25, 25, Image.SCALE_FAST)));</span>
+
+<span class="fc" id="L28">        Board board = Board.getInstance();</span>
+<span class="fc" id="L29">        board.getCells()[x][y].add(label);</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     * 
+     * @return the JLabel of the reward object.
+     */
+    public JLabel getLabel() {
+<span class="fc" id="L37">        return label;</span>
+    }
+
+    /**
+     * Gets the instance of BoardState and checks if regular reward is collected by the player.
+     * If reward is collected, the method gets the instance of the ScoreBoard and Board. 
+     * Player's score gets updated (+5), collected reward's JLabel gets removed from cell.
+     */
+    public void collectedRR() {
+<span class="fc" id="L46">        BoardState boardState = BoardState.getInstance();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if(boardState.boardStateCells[this.getX()][this.getY()].getContainsReward() == 1) {</span>
+<span class="fc" id="L48">            ScoreBoard scoreBoard = ScoreBoard.getInstance();</span>
+<span class="fc" id="L49">            scoreBoard.updateScore(5);</span>
+<span class="fc" id="L50">            Board board = Board.getInstance();</span>
+<span class="fc" id="L51">            board.getCells()[this.getX()][this.getY()].remove(this.getLabel());</span>
+        }
+<span class="fc" id="L53">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
